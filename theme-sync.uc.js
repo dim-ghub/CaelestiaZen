@@ -15,8 +15,8 @@
   }
   window.__caelestiaThemeSyncInitialized = true;
 
-  const PREF_ENABLED = "caelestia.theme-sync.enabled";
-  const PREF_CHROME_PATH = "caelestia.theme-sync.chrome-path";
+  const PREF_ENABLED = "extensions.caelestia-zen-sync.enabled";
+  const PREF_CHROME_PATH = "extensions.caelestia-zen-sync.chrome-path";
   const DEFAULT_CHROME_PATH = "/home/dim/.local/state/caelestia/theme/zen-browser.css";
 
   let chromeStyleEl = null;

@@ -5,13 +5,13 @@
   },
   {
     "type": "checkbox",
-    "property": "caelestia.theme-sync.enabled",
+    "property": "extensions.caelestia-zen-sync.enabled",
     "defaultValue": true,
     "label": "Enable Theme Sync"
   },
   {
     "type": "string",
-    "property": "caelestia.theme-sync.chrome-path",
+    "property": "extensions.caelestia-zen-sync.chrome-path",
     "defaultValue": "~/.local/state/caelestia/theme/zen-browser.css",
     "label": "Chrome Theme Path",
     "description": "Path to the generated chrome theme CSS file"
