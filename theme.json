@@ -1,0 +1,24 @@
+{
+  "id": "caelestia-theme-sync",
+  "name": "Caelestia Theme Sync",
+  "description": "Syncs Caelestia's color scheme to Zen Browser in real-time.",
+  "homepage": "https://github.com/caelestia-dots",
+  "author": "Caelestia",
+  "version": "1.0.0",
+  "tags": [
+    "Theme",
+    "Sync",
+    "Customization"
+  ],
+  "scripts": {
+    "theme-sync.uc.js": {
+      "name": "Caelestia Theme Sync",
+      "description": "Watches theme files and applies them to Zen Browser",
+      "include": [
+        "chrome://browser/content/browser.xhtml"
+      ]
+    }
+  },
+  "preferences": "preferences.json",
+  "createdAt": "2026-05-28"
+}
