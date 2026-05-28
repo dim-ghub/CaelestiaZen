@@ -2,8 +2,8 @@
   "id": "caelestia-theme-sync",
   "name": "Caelestia Theme Sync",
   "description": "Syncs Caelestia's color scheme to Zen Browser in real-time.",
-  "homepage": "https://github.com/caelestia-dots",
-  "author": "Caelestia",
+  "homepage": "https://github.com/dim-ghub/CaelestiaZen",
+  "author": "DiM",
   "version": "1.0.0",
   "tags": [
     "Theme",
