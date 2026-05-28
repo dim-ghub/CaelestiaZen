@@ -35,6 +35,7 @@ cp "$SCRIPT_DIR/theme.json" "$MOD_DIR/"
 cp "$SCRIPT_DIR/theme-sync.uc.js" "$MOD_DIR/"
 cp "$SCRIPT_DIR/preferences.json" "$MOD_DIR/"
 cp "$SCRIPT_DIR/chrome.css" "$MOD_DIR/"
+cp "$SCRIPT_DIR/assets/zen-logo.svg" "$MOD_DIR/"
 
 # Update mods.json
 MODS_JSON="$PROFILE_DIR/chrome/sine-mods/mods.json"
