@@ -9,20 +9,30 @@ A Sine mod for Zen Browser that syncs Caelestia's color scheme to the browser UI
 - Dark/light mode detection
 - Minimal, lightweight implementation
 
-## Sine Mod Installation
+## Installation
 
-Since this is a local Sine mod (not from the marketplace), follow these steps:
+Run the install script:
+```bash
+bash install.sh
+```
 
-### Option 1: Manual Copy (Recommended)
+This will automatically:
+- Detect your Zen profile
+- Copy the mod files
+- Update `mods.json`
 
-1. Create the mod directory in your Zen profile:
+Then restart Zen Browser.
+
+## Manual Installation
+
+1. Create the mod directory:
 ```bash
 mkdir -p ~/.config/zen/<profile>/chrome/sine-mods/caelestia-theme-sync
 ```
 
 2. Copy the mod files:
 ```bash
-cp theme.json theme-sync.uc.js preferences.json chrome.css ~/.config/zen/<profile>/chrome/sine-mods/caelestia-theme-sync/
+cp *.json *.uc.js *.css ~/.config/zen/<profile>/chrome/sine-mods/caelestia-theme-sync/
 ```
 
 3. Add to `mods.json` in `~/.config/zen/<profile>/chrome/sine-mods/`:
@@ -32,23 +42,14 @@ python3 -c "
 import json
 with open('mods.json', 'r') as f:
     mods = json.load(f)
-mods['caelestia-theme-sync'] = json.load(open('caelestia-theme-sync/theme.json'))
+with open('caelestia-theme-sync/theme.json', 'r') as f:
+    new_mod = json.load(f)
+mods['caelestia-theme-sync'] = new_mod
 mods['caelestia-theme-sync']['origin'] = 'store'
 with open('mods.json', 'w') as f:
     json.dump(mods, f, indent=2)
 "
 ```
-
-4. Restart Zen Browser
-
-### Option 2: Git Clone
-
-```bash
-cd ~/.config/zen/<profile>/chrome/sine-mods
-git clone git@github.com:dim-ghub/CaelestiaZen.git caelestia-theme-sync
-```
-
-Then add to `mods.json` as shown above.
 
 ## Configuration
 
