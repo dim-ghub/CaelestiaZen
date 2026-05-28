@@ -1,0 +1,142 @@
+/* Caelestia Theme for Zen Browser */
+/* Generated from ~/.config/caelestia/templates/zen-browser.css */
+
+/* Named variables for JS extraction */
+:root {
+  --caelestia-surface: #{{ surface.hex }};
+  --caelestia-surfaceContainer: #{{ surfaceContainer.hex }};
+  --caelestia-surfaceContainerHigh: #{{ surfaceContainerHigh.hex }};
+  --caelestia-onSurface: #{{ onSurface.hex }};
+  --caelestia-primary: #{{ primary.hex }};
+  --caelestia-outline: #{{ outline.hex }};
+  color-scheme: {{ mode }};
+}
+
+/* Override inline styles on documentElement - MUST use !important */
+html,
+:root,
+#main-window,
+[x-test] {
+  --zen-main-browser-background: #{{ surfaceContainer.hex }} !important;
+  --zen-main-browser-background-old: #{{ surfaceContainer.hex }} !important;
+}
+
+/* Set background directly on documentElement to override JS */
+html:root,
+:root,
+html {
+  background-color: #{{ surfaceContainer.hex }} !important;
+}
+
+#main-window[caelestia-theme-active="true"] {
+  --zen-primary-color: #{{ primary.hex }} !important;
+  --zen-colors-primary: #{{ primary.hex }} !important;
+  --zen-colors-primary-foreground: #{{ onPrimary.hex }} !important;
+  --zen-colors-border: #{{ outline.hex }} !important;
+
+  --zen-branding-dark: #{{ surface.hex }} !important;
+  --zen-branding-paper: #{{ surfaceContainerHigh.hex }} !important;
+  --zen-branding-bg: #{{ surface.hex }} !important;
+  --zen-branding-bg-reverse: #{{ onSurface.hex }} !important;
+
+  --zen-main-browser-background: #{{ surfaceContainer.hex }} !important;
+  --zen-main-browser-background-old: #{{ surfaceContainer.hex }} !important;
+  --zen-main-browser-background-toolbar: #{{ surfaceContainer.hex }} !important;
+  --zen-main-browser-background-toolbar-old: #{{ surfaceContainerHigh.hex }} !important;
+  --zen-themed-toolbar-bg: #{{ surfaceContainerHigh.hex }} !important;
+  --zen-themed-toolbar-bg-transparent: #{{ surfaceContainer.hex }} !important;
+
+  --toolbar-bgcolor: #{{ surfaceContainer.hex }} !important;
+  --toolbar-color: #{{ onSurface.hex }} !important;
+  --toolbox-textcolor: #{{ onSurface.hex }} !important;
+  --toolbox-textcolor-inactive: #{{ onSurfaceVariant.hex }} !important;
+
+  --zen-colors-secondary: #{{ secondary.hex }} !important;
+  --zen-colors-tertiary: #{{ tertiary.hex }} !important;
+  --zen-colors-hover-bg: #{{ surfaceContainerHigh.hex }} !important;
+  --zen-colors-primary-foreground: #{{ onPrimary.hex }} !important;
+  --zen-colors-border: #{{ outline.hex }} !important;
+  --zen-colors-border-contrast: #{{ outlineVariant.hex }} !important;
+  --zen-colors-input-bg: #{{ surfaceContainerHigh.hex }} !important;
+
+  --zen-dialog-background: #{{ surfaceContainer.hex }} !important;
+  --zen-urlbar-background: #{{ surfaceContainerHigh.hex }} !important;
+
+  --in-content-primary-button-background: #{{ primary.hex }} !important;
+  --in-content-primary-button-text-color: #{{ onPrimary.hex }} !important;
+  --in-content-button-background: #{{ surfaceContainerHigh.hex }} !important;
+  --in-content-button-text-color: #{{ onSurface.hex }} !important;
+  --in-content-accent-color: #{{ primary.hex }} !important;
+
+  --link-color: #{{ onSurface.hex }} !important;
+  --in-content-page-background: #{{ surface.hex }} !important;
+  --zen-in-content-dialog-background: #{{ surfaceContainer.hex }} !important;
+
+  --input-bgcolor: #{{ surfaceContainerHigh.hex }} !important;
+  --toolbar-field-focus-background-color: #{{ surfaceContainerHighest.hex }} !important;
+  --toolbar-field-background-color: #{{ surfaceContainerHigh.hex }} !important;
+  --urlbar-box-hover-bgcolor: #{{ surfaceContainerHighest.hex }} !important;
+  --urlbar-box-active-bgcolor: #{{ surfaceContainerHighest.hex }} !important;
+  --urlbar-box-bgcolor: #{{ surfaceContainerHigh.hex }} !important;
+
+  --tab-background-color: #{{ surfaceContainer.hex }} !important;
+  --tab-hover-background-color: #{{ surfaceContainerHigh.hex }} !important;
+
+  --arrowpanel-background: #{{ surfaceContainer.hex }} !important;
+  --arrowpanel-border-color: #{{ outline.hex }} !important;
+  --arrowpanel-color: #{{ onSurface.hex }} !important;
+
+  --toolbarbutton-hover-background: #{{ surfaceContainerHigh.hex }} !important;
+  --toolbarbutton-active-background: #{{ surfaceContainerHighest.hex }} !important;
+  --toolbarbutton-icon-fill: #{{ onSurface.hex }} !important;
+  --toolbarbutton-icon-fill-attention: #{{ primary.hex }} !important;
+
+  --urlbar-box-active-bgcolor: #{{ surfaceContainerHighest.hex }} !important;
+  --zen-toolbar-element-bg: #{{ surfaceContainerHigh.hex }} !important;
+  --zen-toolbar-element-bg-hover: #{{ surfaceContainerHighest.hex }} !important;
+
+  --zen-appcontent-border: 1px solid #{{ outline.hex }} !important;
+  --input-border-color: #{{ outlineVariant.hex }} !important;
+  --zen-input-border-color: #{{ outlineVariant.hex }} !important;
+}
+
+#sidebar-box {
+  --sidebar-background-color: #{{ surfaceDim.hex }} !important;
+  --sidebar-text-color: #{{ onSurface.hex }} !important;
+  --lwt-sidebar-text-color: #{{ onSurface.hex }} !important;
+  --lwt-sidebar-background-color: #{{ surfaceDim.hex }} !important;
+}
+
+#TabsToolbar,
+#navigator-toolbox {
+  background: #{{ surfaceContainer.hex }} !important;
+}
+
+#urlbar {
+  --toolbar-color: #{{ onSurface.hex }} !important;
+  --toolbar-field-color: #{{ onSurfaceVariant.hex }} !important;
+}
+
+#urlbar-background {
+  background: #{{ surfaceContainerHigh.hex }} !important;
+}
+
+#main-window .toolbarbutton-icon {
+  fill: #{{ onSurface.hex }} !important;
+}
+
+::selection {
+  background: #{{ primary.hex }} !important;
+  color: #{{ onPrimary.hex }} !important;
+}
+
+#appMenu-popup,
+.menupopup-arrowscrollbox,
+.panel-arrowcontent {
+  background-color: #{{ surfaceContainer.hex }} !important;
+}
+
+/* New tab background - use surface color instead of transparent */
+.browserStack browser {
+  background-color: #{{ surface.hex }} !important;
+}

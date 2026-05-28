@@ -61,6 +61,16 @@ Edit preferences in Sine settings:
 
 The mod watches for changes in the chrome theme file and automatically applies updates to the browser UI (toolbar, tabs, sidebar, etc.).
 
+## Template Setup
+
+Copy the template to your Caelestia config:
+```bash
+mkdir -p ~/.config/caelestia/templates
+cp templates/zen-browser.css ~/.config/caelestia/templates/
+```
+
+The template uses Mustache-style placeholders (`{{ variableName.hex }}`) that Caelestia replaces with actual colors.
+
 ## Requirements
 
 - [Caelestia](https://github.com/caelestia-dots) dotfiles with theme generation configured
