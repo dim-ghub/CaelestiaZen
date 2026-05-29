@@ -1,10 +1,10 @@
 # CaelestiaZen
 
-A Sine mod for Zen Browser that syncs Caelestia's surface color to Zen Boosts, automatically theming all websites.
+A Sine mod for Zen Browser that live themes the browser as well as generates a global Boost to recolor every site you visit.
 
 ## Features
 
-- Real-time sync with Caelestia's generated theme files
+- Real-time sync with Caelestia's color scheme
 - Automatically applies surface color to all websites via Zen Boosts
 - Applies theme to browser chrome (background, sidebar, etc.)
 - Configurable chrome theme path
@@ -24,10 +24,10 @@ bash install.sh --dev
 
 This will automatically:
 - Detect your Zen profile
-- Copy or symlink the mod files
+- Copy or symlink the mod files and template
 - Update `mods.json`
 
-Then restart Zen Browser.
+Then restart Zen Browser and enable the mod in settings.
 
 ## Manual Installation
 
@@ -77,14 +77,9 @@ mkdir -p ~/.config/caelestia/templates
 cp templates/zen-browser.css ~/.config/caelestia/templates/
 ```
 
-The template uses Mustache-style placeholders (`{{ variableName.hex }}`) that Caelestia replaces with actual colors.
+The install script will do this for you.
 
 ## Requirements
 
-- [Caelestia](https://github.com/caelestia-dots) dotfiles with theme generation configured
+- [Caelestia](https://github.com/caelestia-dots)
 - Zen Browser with Sine mod system installed
-- A `zen-browser.css` template in `~/.config/caelestia/templates/`
-
-## License
-
-GPL-3.0
