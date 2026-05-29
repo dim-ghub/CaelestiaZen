@@ -66,8 +66,8 @@
 
   function loadBoostSettings() {
     const saturationRaw = getNumPref(PREF_SATURATION, 150);
-    const brightnessRaw = getNumPref(PREF_BRIGHTNESS, 19);
-    const contrastRaw = getNumPref(PREF_CONTRAST, 50);
+    const brightnessRaw = getNumPref(PREF_BRIGHTNESS, 15);
+    const contrastRaw = getNumPref(PREF_CONTRAST, 30);
 
     const settings = {
       saturationMultiplier: saturationRaw / 100,

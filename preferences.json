@@ -26,7 +26,7 @@
     "type": "string",
     "value": "num",
     "property": "caelestia.zen-sync.brightness",
-    "defaultValue": "19",
+    "defaultValue": "15",
     "label": "Color Brightness",
     "description": "0-100 (default: 5 = 0.05)"
   },
@@ -34,7 +34,7 @@
     "type": "string",
     "value": "num",
     "property": "caelestia.zen-sync.contrast",
-    "defaultValue": "50",
+    "defaultValue": "30",
     "label": "Color Strength",
     "description": "0-100 (default: 50 = 0.50, lower = stronger)"
   }
