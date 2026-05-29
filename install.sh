@@ -45,15 +45,16 @@ if [[ "$DEV_MODE" == true ]]; then
     ln -sf "$SCRIPT_DIR/theme-sync.uc.js" "$MOD_DIR/"
     ln -sf "$SCRIPT_DIR/preferences.json" "$MOD_DIR/"
     ln -sf "$SCRIPT_DIR/chrome.css" "$MOD_DIR/"
-    mkdir -p "$MOD_DIR/assets"
-    ln -sf "$SCRIPT_DIR/assets/zen-logo.svg" "$MOD_DIR/assets/"
+    mkdir -p ~/.config/caelestia/templates
+    ln -sf "$SCRIPT_DIR/templates/zen-browser.css" "~/.config/caelestia/templates/"
     echo "Installed in DEV mode (symlinks)"
 else
     cp "$SCRIPT_DIR/theme.json" "$MOD_DIR/"
     cp "$SCRIPT_DIR/theme-sync.uc.js" "$MOD_DIR/"
     cp "$SCRIPT_DIR/preferences.json" "$MOD_DIR/"
     cp "$SCRIPT_DIR/chrome.css" "$MOD_DIR/"
-    cp "$SCRIPT_DIR/assets/zen-logo.svg" "$MOD_DIR/"
+    mkdir -p ~/.config/caelestia/templates
+    cp "$SCRIPT_DIR/templates/zen-browser.css" "~/.config/caelestia/templates/"
     echo "Installed (copied)"
 fi
 
@@ -88,4 +89,4 @@ fi
 
 echo ""
 echo "CaelestiaZen installed successfully!"
-echo "Restart Zen Browser to activate the mod."
+echo "Restart Zen Browser then enable the mod."
