@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 
-# Caelestia Zen Sync Install Script (Bash version)
+# CaelestiaZen Install Script
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEV_MODE=false
+
+# Parse --dev flag
+for arg in "$@"; do
+    if [[ "$arg" == "--dev" ]]; then
+        DEV_MODE=true
+        break
+    fi
+done
 
 # Find Zen profile
 find_zen_profile() {
@@ -24,18 +33,29 @@ if [[ -z "$PROFILE_DIR" ]]; then
     exit 1
 fi
 
-MOD_DIR="$PROFILE_DIR/chrome/sine-mods/caelestia-theme-sync"
+MOD_DIR="$PROFILE_DIR/chrome/sine-mods/caelestia-zen"
 echo "Installing to: $MOD_DIR"
 
 # Create mod directory
 mkdir -p "$MOD_DIR"
 
-# Copy mod files
-cp "$SCRIPT_DIR/theme.json" "$MOD_DIR/"
-cp "$SCRIPT_DIR/theme-sync.uc.js" "$MOD_DIR/"
-cp "$SCRIPT_DIR/preferences.json" "$MOD_DIR/"
-cp "$SCRIPT_DIR/chrome.css" "$MOD_DIR/"
-cp "$SCRIPT_DIR/assets/zen-logo.svg" "$MOD_DIR/"
+# Install files (symlink in dev mode, copy otherwise)
+if [[ "$DEV_MODE" == true ]]; then
+    ln -sf "$SCRIPT_DIR/theme.json" "$MOD_DIR/"
+    ln -sf "$SCRIPT_DIR/theme-sync.uc.js" "$MOD_DIR/"
+    ln -sf "$SCRIPT_DIR/preferences.json" "$MOD_DIR/"
+    ln -sf "$SCRIPT_DIR/chrome.css" "$MOD_DIR/"
+    mkdir -p "$MOD_DIR/assets"
+    ln -sf "$SCRIPT_DIR/assets/zen-logo.svg" "$MOD_DIR/assets/"
+    echo "Installed in DEV mode (symlinks)"
+else
+    cp "$SCRIPT_DIR/theme.json" "$MOD_DIR/"
+    cp "$SCRIPT_DIR/theme-sync.uc.js" "$MOD_DIR/"
+    cp "$SCRIPT_DIR/preferences.json" "$MOD_DIR/"
+    cp "$SCRIPT_DIR/chrome.css" "$MOD_DIR/"
+    cp "$SCRIPT_DIR/assets/zen-logo.svg" "$MOD_DIR/"
+    echo "Installed (copied)"
+fi
 
 # Update mods.json
 MODS_JSON="$PROFILE_DIR/chrome/sine-mods/mods.json"
@@ -47,8 +67,8 @@ with open('$MODS_JSON', 'r') as f:
     mods = json.load(f)
 with open('$SCRIPT_DIR/theme.json', 'r') as f:
     new_mod = json.load(f)
-mods['caelestia-theme-sync'] = new_mod
-mods['caelestia-theme-sync']['origin'] = 'store'
+mods['caelestia-zen'] = new_mod
+mods['caelestia-zen']['origin'] = 'store'
 with open('$MODS_JSON', 'w') as f:
     json.dump(mods, f, indent=2)
 EOF
@@ -59,7 +79,7 @@ import json
 with open('$SCRIPT_DIR/theme.json', 'r') as f:
     new_mod = json.load(f)
 new_mod['origin'] = 'store'
-mods = {'caelestia-theme-sync': new_mod}
+mods = {'caelestia-zen': new_mod}
 with open('$MODS_JSON', 'w') as f:
     json.dump(mods, f, indent=2)
 EOF
@@ -67,8 +87,5 @@ EOF
 fi
 
 echo ""
-echo "Caelestia Zen Sync installed successfully!"
+echo "CaelestiaZen installed successfully!"
 echo "Restart Zen Browser to activate the mod."
-echo ""
-echo "For website theming, install CaelestiaSites:"
-echo "https://github.com/dim-ghub/CaelestiaSites"

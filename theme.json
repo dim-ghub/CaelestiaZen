@@ -1,19 +1,20 @@
 {
-  "id": "caelestia-theme-sync",
-  "name": "Caelestia Theme Sync",
-  "description": "Syncs Caelestia's color scheme to Zen Browser in real-time.",
+  "id": "caelestia-zen",
+  "name": "CaelestiaZen",
+  "description": "Syncs Caelestia's surface color to Zen Browser boosts.",
   "homepage": "https://github.com/dim-ghub/CaelestiaZen",
   "author": "DiM",
   "version": "1.0.0",
   "tags": [
     "Theme",
+    "Boost",
     "Sync",
-    "Customization"
+    "Caelestia"
   ],
   "scripts": {
     "theme-sync.uc.js": {
-      "name": "Caelestia Theme Sync",
-      "description": "Watches theme files and applies them to Zen Browser",
+      "name": "CaelestiaZen",
+      "description": "Syncs surface color to Zen Boosts.",
       "include": [
         "chrome://browser/content/browser.xhtml"
       ]
