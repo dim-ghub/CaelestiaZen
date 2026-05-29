@@ -1,19 +1,41 @@
 [
   {
     "type": "separator",
-    "label": "Caelestia Theme Sync Settings"
-  },
-  {
-    "type": "checkbox",
-    "property": "extensions.caelestia-zen-sync.enabled",
-    "defaultValue": true,
-    "label": "Enable Theme Sync"
+    "label": "CaelestiaZen Settings"
   },
   {
     "type": "string",
-    "property": "extensions.caelestia-zen-sync.chrome-path",
+    "property": "caelestia.zen-sync.chrome-path",
     "defaultValue": "~/.local/state/caelestia/theme/zen-browser.css",
-    "label": "Chrome Theme Path",
-    "description": "Path to the generated chrome theme CSS file"
+    "label": "Theme File Path",
+    "description": "Path to the zen-browser.css theme file"
+  },
+  {
+    "type": "separator",
+    "label": "Website Boost"
+  },
+  {
+    "type": "string",
+    "value": "num",
+    "property": "caelestia.zen-sync.saturation",
+    "defaultValue": "200",
+    "label": "Color Intensity",
+    "description": "0-200 (default: 200 = 2.00)"
+  },
+  {
+    "type": "string",
+    "value": "num",
+    "property": "caelestia.zen-sync.brightness",
+    "defaultValue": "5",
+    "label": "Color Brightness",
+    "description": "0-100 (default: 5 = 0.05)"
+  },
+  {
+    "type": "string",
+    "value": "num",
+    "property": "caelestia.zen-sync.contrast",
+    "defaultValue": "50",
+    "label": "Color Strength",
+    "description": "0-100 (default: 50 = 0.50, lower = stronger)"
   }
 ]

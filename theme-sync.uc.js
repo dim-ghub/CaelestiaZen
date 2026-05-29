@@ -16,6 +16,10 @@
   window.__caelestiaZenInitialized = true;
 
   const PREF_CHROME_PATH = "caelestia.zen-sync.chrome-path";
+  const PREF_SATURATION = "caelestia.zen-sync.saturation";
+  const PREF_BRIGHTNESS = "caelestia.zen-sync.brightness";
+  const PREF_CONTRAST = "caelestia.zen-sync.contrast";
+  const BOOST_PREFS = [PREF_SATURATION, PREF_BRIGHTNESS, PREF_CONTRAST];
   const DEFAULT_CHROME_PATH = "/home/dim/.local/state/caelestia/theme/zen-browser.css";
 
   let chromeStyleEl = null;
@@ -32,6 +36,46 @@
       }
     } catch (e) {}
     return defaultValue;
+  }
+
+  function getNumPref(prefName, defaultValue) {
+    try {
+      if (Services.prefs.prefHasUserValue(prefName)) {
+        const prefType = Services.prefs.getPrefType(prefName);
+        let val;
+        if (prefType === Ci.nsIPrefBranch.PREF_STRING) {
+          val = Services.prefs.getStringPref(prefName);
+          if (!val || val.trim() === "") return defaultValue;
+          const parsed = parseFloat(val);
+          if (isNaN(parsed)) return defaultValue;
+          return parsed;
+        } else if (prefType === Ci.nsIPrefBranch.PREF_INT) {
+          val = Services.prefs.getIntPref(prefName);
+          return val;
+        } else if (prefType === Ci.nsIPrefBranch.PREF_FLOAT) {
+          val = Services.prefs.getFloatPref(prefName);
+          return val;
+        }
+        return defaultValue;
+      }
+    } catch (e) {
+      console.error("[CaelestiaZen] Error reading num pref", prefName, e);
+    }
+    return defaultValue;
+  }
+
+  function loadBoostSettings() {
+    const saturationRaw = getNumPref(PREF_SATURATION, 100);
+    const brightnessRaw = getNumPref(PREF_BRIGHTNESS, 50);
+    const contrastRaw = getNumPref(PREF_CONTRAST, 50);
+
+    const settings = {
+      saturationMultiplier: saturationRaw / 100,
+      brightness: brightnessRaw / 100,
+      contrast: contrastRaw / 100,
+    };
+    console.log("[CaelestiaZen] Raw values:", { saturationRaw, brightnessRaw, contrastRaw }, "-> Settings:", settings);
+    return settings;
   }
 
   function expandPath(path) {
@@ -125,18 +169,20 @@
     ];
   }
 
-  function applyCaelestiaBoost(surfaceHex) {
+function applyCaelestiaBoost(surfaceHex) {
     if (!surfaceHex || surfaceHex.length !== 7) return;
 
     const [r, g, b] = hexToRgb(surfaceHex);
     const [h, s, l] = rgbToHsl(r, g, b);
 
+    const settings = loadBoostSettings();
+
     const boostData = {
       dotAngleDeg: Math.round(h * 360),
-      dotDistance: s,
-      saturation: s,
-      brightness: 0.5,
-      contrast: 0.75,
+      dotDistance: Math.min(s * settings.saturationMultiplier, 1),
+      saturation: Math.min(s * settings.saturationMultiplier, 1),
+      brightness: settings.brightness,
+      contrast: settings.contrast,
       smartInvert: false,
       secondaryDotAngleDegDelta: 55,
       enableColorBoost: true,
@@ -308,6 +354,11 @@
   function init() {
     if (window.location.href !== "chrome://browser/content/browser.xhtml") return;
 
+    Services.prefs.addObserver(PREF_SATURATION, onBoostSettingsChange);
+    Services.prefs.addObserver(PREF_BRIGHTNESS, onBoostSettingsChange);
+    Services.prefs.addObserver(PREF_CONTRAST, onBoostSettingsChange);
+    Services.prefs.addObserver(PREF_CHROME_PATH, loadChromeTheme);
+
     const start = () => {
       mainWin = window;
       loadChromeTheme();
@@ -329,6 +380,12 @@
     }
 
     console.log("[CaelestiaZen] Init complete!");
+  }
+
+  function onBoostSettingsChange() {
+    if (!currentColors.surface) return;
+    applyCaelestiaBoost(currentColors.surface);
+    console.log("[CaelestiaZen] Boost settings updated");
   }
 
   init();

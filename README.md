@@ -60,7 +60,10 @@ with open('mods.json', 'w') as f:
 ## Configuration
 
 Edit preferences in Sine settings:
-- **Chrome Theme Path**: Path to the generated chrome CSS (default: `~/.local/state/caelestia/theme/zen-browser.css`)
+- **Theme File Path**: Path to the zen-browser.css theme file (default: `~/.local/state/caelestia/theme/zen-browser.css`)
+- **Color Intensity**: 0-200 (default: 200)
+- **Color Brightness**: 0-100 (default: 5)
+- **Color Strength**: 0-100, lower = stronger (default: 50)
 
 ## Theme File
 
