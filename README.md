@@ -23,7 +23,7 @@ bash install.sh --dev
 ```
 
 This will automatically:
-- Detect your Zen profile
+- Install Sine
 - Copy or symlink the mod files and template
 - Update `mods.json`
 
