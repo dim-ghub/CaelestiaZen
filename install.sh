@@ -372,6 +372,7 @@ install_sine() {
 
 install_mod() {
     local PROFILE_DIR="$1"
+    XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 
     info "=== CaelestiaZen Mod Installation ==="
 
@@ -379,7 +380,7 @@ install_mod() {
     info "Installing mod to: $MOD_DIR"
 
     mkdir -p "$MOD_DIR"
-    mkdir -p "$HOME/.config/caelestia/templates"
+    mkdir -p "$XDG_CONFIG_HOME/caelestia/templates"
 
     export MODS_JSON="$PROFILE_DIR/chrome/sine-mods/mods.json"
     export SCRIPT_DIR
@@ -389,14 +390,14 @@ install_mod() {
         ln -sf "$SCRIPT_DIR/theme-sync.uc.js" "$MOD_DIR/"
         ln -sf "$SCRIPT_DIR/preferences.json" "$MOD_DIR/"
         ln -sf "$SCRIPT_DIR/chrome.css" "$MOD_DIR/"
-        ln -sf "$SCRIPT_DIR/templates/zen-browser.css" "$HOME/.config/caelestia/templates/"
+        ln -sf "$SCRIPT_DIR/templates/zen-browser.css" "$XDG_CONFIG_HOME/caelestia/templates/"
         ok "Installed in DEV mode (symlinks)"
     else
         cp "$SCRIPT_DIR/theme.json" "$MOD_DIR/"
         cp "$SCRIPT_DIR/theme-sync.uc.js" "$MOD_DIR/"
         cp "$SCRIPT_DIR/preferences.json" "$MOD_DIR/"
         cp "$SCRIPT_DIR/chrome.css" "$MOD_DIR/"
-        cp "$SCRIPT_DIR/templates/zen-browser.css" "$HOME/.config/caelestia/templates/"
+        cp "$SCRIPT_DIR/templates/zen-browser.css" "$XDG_CONFIG_HOME/caelestia/templates/"
         ok "Installed (copied)"
     fi
 

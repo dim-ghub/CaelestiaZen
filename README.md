@@ -12,13 +12,15 @@ A Sine mod for Zen Browser that live themes the browser as well as generates a g
 
 ## Installation
 
-Run the install script:
+Use [pkgit](https://git.symlinx.net/pkgit/) to install CaelestiaZen:
 ```bash
-bash install.sh
+pkgit -i https://github.com/dim-ghub/CaelestiaZen
 ```
 
-For development with symlinks:
+For development, clone the repository and run the install script with the `--dev` flag to use symlinks:
 ```bash
+git clone https://github.com/dim-ghub/CaelestiaZen
+cd CaelestiaZen
 bash install.sh --dev
 ```
 
