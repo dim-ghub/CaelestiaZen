@@ -19,6 +19,8 @@
   const PREF_SATURATION = "caelestia.zen-sync.saturation";
   const PREF_BRIGHTNESS = "caelestia.zen-sync.brightness";
   const PREF_CONTRAST = "caelestia.zen-sync.contrast";
+  const PREF_TRANSPARENT_ZEN = "caelestia.zen-sync.transparent-zen";
+  const PREF_TRANSPARENCY_LEVEL = "caelestia.zen-sync.transparency-level";
   const BOOST_PREFS = [PREF_SATURATION, PREF_BRIGHTNESS, PREF_CONTRAST];
   const DEFAULT_CHROME_PATH = "/home/dim/.local/state/caelestia/theme/zen-browser.css";
 
@@ -27,6 +29,15 @@
   let currentColors = {};
   let currentBoostData = null;
   let mainWin = null;
+
+  function getBoolPref(prefName, defaultValue) {
+    try {
+      if (Services.prefs.prefHasUserValue(prefName)) {
+        return Services.prefs.getBoolPref(prefName);
+      }
+    } catch (e) {}
+    return defaultValue;
+  }
 
   function getPref(prefName, defaultValue) {
     try {
@@ -87,35 +98,75 @@
 
   // Apply colors directly to Zen's background element with inline styles
   function applyToZenBackground() {
-    if (!currentColors.surfaceContainer) return;
+    let bgColor = currentColors.surfaceContainer;
+    const isTransparentZen = getBoolPref(PREF_TRANSPARENT_ZEN, false);
+    const docEl = document.documentElement;
 
-    // Target the specific element that Zen uses
+    let transparentOverrides = document.getElementById("caelestia-transparent-overrides");
+    if (transparentOverrides) transparentOverrides.remove();
+
     const zenBg = document.getElementById("zen-browser-background") ||
                   document.querySelector(".zen-browser-generic-background") ||
                   document.querySelector(".zen-gradient-canvas");
+    const browser = document.getElementById("browser");
+    const tabpanels = document.getElementById("tabbrowser-tabpanels");
+
+    if (isTransparentZen && currentColors.surface) {
+      if (zenBg) {
+        zenBg.style.removeProperty("--zen-main-browser-background");
+        zenBg.style.removeProperty("--zen-main-browser-background-old");
+        zenBg.style.removeProperty("background-color");
+      }
+      if (browser) {
+        browser.style.removeProperty("--zen-main-browser-background");
+        browser.style.removeProperty("background-color");
+      }
+      if (tabpanels) tabpanels.style.removeProperty("background-color");
+      
+      docEl.style.removeProperty("--zen-main-browser-background");
+      docEl.style.removeProperty("--zen-main-browser-background-old");
+      docEl.style.removeProperty("background-color");
+      docEl.removeAttribute("caelestia-theme-active");
+
+      const alphaRaw = getNumPref(PREF_TRANSPARENCY_LEVEL, 80);
+      const alpha = Math.max(0, Math.min(100, alphaRaw)) / 100;
+      const [r, g, b] = hexToRgb(currentColors.surface);
+      bgColor = `rgba(${Math.round(r*255)}, ${Math.round(g*255)}, ${Math.round(b*255)}, ${alpha})`;
+      
+      try {
+        Services.prefs.setBoolPref("mod.sameerasw.zen_bg_color_enabled", true);
+      } catch (e) {
+        console.error("[CaelestiaZen] Failed to force zen_bg_color_enabled", e);
+      }
+      
+      docEl.style.setProperty("--mod-sameerasw-zen_transparency_color", bgColor, "important");
+      console.log("[CaelestiaZen] Delegated background to Transparent Zen:", bgColor);
+      return;
+    }
+
+    docEl.style.removeProperty("--mod-sameerasw-zen_transparency_color");
+
+    if (!bgColor) return;
 
     if (zenBg) {
-      zenBg.style.setProperty("--zen-main-browser-background", currentColors.surfaceContainer);
-      zenBg.style.setProperty("--zen-main-browser-background-old", currentColors.surfaceContainer);
-      zenBg.style.backgroundColor = currentColors.surfaceContainer;
-      console.log("[CaelestiaZen] Applied to #zen-browser-background:", currentColors.surfaceContainer);
+      zenBg.style.setProperty("--zen-main-browser-background", bgColor, "important");
+      zenBg.style.setProperty("--zen-main-browser-background-old", bgColor, "important");
+      zenBg.style.setProperty("background-color", bgColor, "important");
+      console.log("[CaelestiaZen] Applied to #zen-browser-background:", bgColor);
     }
 
-    const browser = document.getElementById("browser");
     if (browser) {
-      browser.style.setProperty("--zen-main-browser-background", currentColors.surfaceContainer);
-      browser.style.backgroundColor = currentColors.surfaceContainer;
+      browser.style.setProperty("--zen-main-browser-background", bgColor, "important");
+      browser.style.setProperty("background-color", bgColor, "important");
     }
 
-    const tabpanels = document.getElementById("tabbrowser-tabpanels");
     if (tabpanels) {
-      tabpanels.style.backgroundColor = currentColors.surfaceContainer;
+      tabpanels.style.setProperty("background-color", bgColor, "important");
     }
 
-    const docEl = document.documentElement;
-    docEl.style.setProperty("--zen-main-browser-background", currentColors.surfaceContainer);
-    docEl.style.setProperty("--zen-main-browser-background-old", currentColors.surfaceContainer);
-    docEl.style.backgroundColor = currentColors.surfaceContainer;
+    docEl.style.setProperty("--zen-main-browser-background", bgColor, "important");
+    docEl.style.setProperty("--zen-main-browser-background-old", bgColor, "important");
+    docEl.style.setProperty("background-color", bgColor, "important");
     docEl.setAttribute("caelestia-theme-active", "true");
   }
 
@@ -227,6 +278,18 @@ function applyCaelestiaBoost(surfaceHex) {
     console.log("[CaelestiaZen] Boost applied to all tabs:", boostData.dotAngleDeg, boostData.saturation);
   }
 
+  function clearBoosts() {
+    if (!mainWin?.gBrowser) return;
+    for (const tab of mainWin.gBrowser.tabs) {
+      const bc = tab.linkedBrowser?.browsingContext;
+      if (!bc) continue;
+      bc.zenBoostsData = 0;
+      bc.isZenBoostsInverted = false;
+    }
+    currentBoostData = null;
+    console.log("[CaelestiaZen] Cleared website theming (Transparent Zen Mod).");
+  }
+
   function buildBoostColor(hueDeg, sat, light, boostData) {
     const [r, g, b] = hslToRgb(hueDeg / 360, sat, light);
     const contrast = boostData.contrast ?? 0.75;
@@ -269,18 +332,28 @@ function applyCaelestiaBoost(surfaceHex) {
       currentColors = extractColors(content);
       console.log("[CaelestiaZen] Colors:", currentColors);
 
-      if (chromeStyleEl) chromeStyleEl.remove();
+      if (chromeStyleEl) {
+        chromeStyleEl.remove();
+        chromeStyleEl = null;
+      }
 
-      chromeStyleEl = document.createElement("style");
-      chromeStyleEl.id = "caelestia-chrome-theme";
-      chromeStyleEl.setAttribute("type", "text/css");
-      chromeStyleEl.textContent = content;
-      document.head.appendChild(chromeStyleEl);
+      const isTransparentZen = getBoolPref(PREF_TRANSPARENT_ZEN, false);
+      if (!isTransparentZen) {
+        chromeStyleEl = document.createElement("style");
+        chromeStyleEl.id = "caelestia-chrome-theme";
+        chromeStyleEl.setAttribute("type", "text/css");
+        chromeStyleEl.textContent = content;
+        document.head.appendChild(chromeStyleEl);
+      }
 
       applyToZenBackground();
 
       if (currentColors.surface) {
-        applyCaelestiaBoost(currentColors.surface);
+        if (getBoolPref(PREF_TRANSPARENT_ZEN, false)) {
+          clearBoosts();
+        } else {
+          applyCaelestiaBoost(currentColors.surface);
+        }
       }
 
       console.log("[CaelestiaZen] Theme applied!");
@@ -357,6 +430,8 @@ function applyCaelestiaBoost(surfaceHex) {
     Services.prefs.addObserver(PREF_SATURATION, onBoostSettingsChange);
     Services.prefs.addObserver(PREF_BRIGHTNESS, onBoostSettingsChange);
     Services.prefs.addObserver(PREF_CONTRAST, onBoostSettingsChange);
+    Services.prefs.addObserver(PREF_TRANSPARENT_ZEN, onBoostSettingsChange);
+    Services.prefs.addObserver(PREF_TRANSPARENCY_LEVEL, onBoostSettingsChange);
     Services.prefs.addObserver(PREF_CHROME_PATH, loadChromeTheme);
 
     const start = () => {
@@ -383,8 +458,8 @@ function applyCaelestiaBoost(surfaceHex) {
   }
 
   function onBoostSettingsChange() {
-    if (!currentColors.surface) return;
-    applyCaelestiaBoost(currentColors.surface);
+    lastChromeMtime = 0; // Force reload
+    loadChromeTheme();
     console.log("[CaelestiaZen] Boost settings updated");
   }
 

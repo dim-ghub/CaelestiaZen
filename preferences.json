@@ -12,6 +12,25 @@
   },
   {
     "type": "separator",
+    "label": "Transparent Zen Mod"
+  },
+  {
+    "type": "checkbox",
+    "property": "caelestia.zen-sync.transparent-zen",
+    "defaultValue": false,
+    "label": "Enable Transparent Zen",
+    "description": "Uses surface color with transparency for background, disables website theming."
+  },
+  {
+    "type": "string",
+    "value": "num",
+    "property": "caelestia.zen-sync.transparency-level",
+    "defaultValue": "80",
+    "label": "Transparency Level",
+    "description": "Opacity level for background (0-100)"
+  },
+  {
+    "type": "separator",
     "label": "Website Boost"
   },
   {
