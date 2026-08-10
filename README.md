@@ -5,7 +5,8 @@ A Sine mod for Zen Browser that live themes the browser as well as generates a g
 ## Features
 
 - Real-time sync with Caelestia's color scheme
-- Automatically applies surface color to all websites via Zen Boosts
+- Automatically applies a chosen scheme color to all websites via Zen Boosts (togglable)
+- Colors the area behind web content with the surface color
 - Applies theme to browser chrome (background, sidebar, etc.)
 - Configurable chrome theme path
 - Minimal, lightweight implementation
@@ -63,13 +64,27 @@ with open('mods.json', 'w') as f:
 
 Edit preferences in Sine settings:
 - **Theme File Path**: Path to the zen-browser.css theme file (default: `~/.local/state/caelestia/theme/zen-browser.css`)
-- **Color Intensity**: 0-200 (default: 150)
-- **Color Brightness**: 0-100 (default: 15)
-- **Color Strength**: 0-100, lower = stronger (default: 30)
+- **Enable Website Boost**: Toggle the Zen Boost that recolors every website (default: on)
+- **Boost Color**: Which scheme variable the boost uses (Surface, Surface Container, Surface Container High, Surface Dim, On Surface, or Primary; default: Surface)
+- **Color Intensity**: 0-200 (default: 150). Lower = more muted, higher = more vivid.
+- **Color Brightness**: 0-100 (default: 15). Lower = darker, higher = brighter.
+- **Color Strength**: 0-100 (default: 30). Lower = stronger tint, higher = more subtle.
+
+## Recoloring Only Website Backgrounds
+
+The built-in Zen Boost shifts the whole color of every website, which can also affect text and icons. If you prefer to recolor **only the backgrounds** of websites while leaving their text and icons untouched, combine this mod with the [Zen Internet](https://addons.mozilla.org/en-US/firefox/addon/zen-internet/) extension:
+
+1. Install the Zen Internet extension.
+2. Turn **off** `Enable Website Boost` in the mod's Sine settings (or set `caelestia.zen-sync.boost-enabled` to `false`).
+3. Zen Internet then applies its per-site CSS — recoloring backgrounds to match the transparent chrome while leaving text and icons readable.
+
+Zen Internet injects custom CSS per website (transparency and background tinting) and only touches backgrounds, so it pairs naturally with the surface/surfaceContainer backgrounds applied by this mod.
+
+> **Tip:** You can also keep `Enable Website Boost` **on** and set **Boost Color** to `Primary`, which tints website backgrounds with the accent color while Zen Internet keeps text and icons readable. A good starting point: Color Intensity `150`, Color Brightness `80`, Color Strength `50`.
 
 ## Theme File
 
-The mod watches for changes in the chrome theme file and automatically applies the surface color to Zen Boosts for all websites.
+The mod watches for changes in the chrome theme file and automatically applies the selected color to Zen Boosts for all websites.
 
 ## Template Setup
 

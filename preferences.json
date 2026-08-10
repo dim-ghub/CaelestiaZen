@@ -34,27 +34,50 @@
     "label": "Website Boost"
   },
   {
+    "type": "checkbox",
+    "property": "caelestia.zen-sync.boost-enabled",
+    "defaultValue": true,
+    "label": "Enable Website Boost",
+    "description": "Applies the selected color boost to every website. Disable to leave websites untouched."
+  },
+  {
+    "type": "dropdown",
+    "value": "string",
+    "property": "caelestia.zen-sync.boost-color",
+    "defaultValue": "surface",
+    "label": "Boost Color",
+    "description": "Which scheme variable is used for the website boost",
+    "options": [
+      { "label": "Surface", "value": "surface" },
+      { "label": "Surface Container", "value": "surfaceContainer" },
+      { "label": "Surface Container High", "value": "surfaceContainerHigh" },
+      { "label": "Surface Dim", "value": "surfaceDim" },
+      { "label": "On Surface", "value": "onSurface" },
+      { "label": "Primary", "value": "primary" }
+    ]
+  },
+  {
     "type": "string",
     "value": "num",
     "property": "caelestia.zen-sync.saturation",
     "defaultValue": "150",
-    "label": "Color Intensity",
-    "description": "0-200 (default: 200 = 2.00)"
+    "label": "Color Intensity (0-200, higher = more vivid)",
+    "description": "Saturation multiplier. Range 0-200, default 150. Lower = more muted, higher = more vivid."
   },
   {
     "type": "string",
     "value": "num",
     "property": "caelestia.zen-sync.brightness",
     "defaultValue": "15",
-    "label": "Color Brightness",
-    "description": "0-100 (default: 5 = 0.05)"
+    "label": "Color Brightness (0-100, higher = brighter)",
+    "description": "Brightness. Range 0-100, default 15. Lower = darker, higher = brighter."
   },
   {
     "type": "string",
     "value": "num",
     "property": "caelestia.zen-sync.contrast",
     "defaultValue": "30",
-    "label": "Color Strength",
-    "description": "0-100 (default: 50 = 0.50, lower = stronger)"
+    "label": "Color Strength (0-100, lower = stronger)",
+    "description": "Tint opacity. Range 0-100, default 30. Lower = stronger tint, higher = more subtle."
   }
 ]

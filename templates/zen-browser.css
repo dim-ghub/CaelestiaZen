@@ -6,6 +6,7 @@
   --caelestia-surface: #{{ surface.hex }};
   --caelestia-surfaceContainer: #{{ surfaceContainer.hex }};
   --caelestia-surfaceContainerHigh: #{{ surfaceContainerHigh.hex }};
+  --caelestia-surfaceDim: #{{ surfaceDim.hex }};
   --caelestia-onSurface: #{{ onSurface.hex }};
   --caelestia-primary: #{{ primary.hex }};
   --caelestia-outline: #{{ outline.hex }};
@@ -82,10 +83,6 @@ html {
   --tab-background-color: #{{ surfaceContainer.hex }} !important;
   --tab-hover-background-color: #{{ surfaceContainerHigh.hex }} !important;
 
-  --arrowpanel-background: #{{ surfaceContainer.hex }} !important;
-  --arrowpanel-border-color: #{{ outline.hex }} !important;
-  --arrowpanel-color: #{{ onSurface.hex }} !important;
-
   --toolbarbutton-hover-background: #{{ surfaceContainerHigh.hex }} !important;
   --toolbarbutton-active-background: #{{ surfaceContainerHighest.hex }} !important;
   --toolbarbutton-icon-fill: #{{ onSurface.hex }} !important;
@@ -95,7 +92,7 @@ html {
   --zen-toolbar-element-bg: #{{ surfaceContainerHigh.hex }} !important;
   --zen-toolbar-element-bg-hover: #{{ surfaceContainerHighest.hex }} !important;
 
-  --zen-appcontent-border: 1px solid #{{ outline.hex }} !important;
+  --zen-appcontent-border: 1px solid #{{ surfaceContainer.hex }} !important;
   --input-border-color: #{{ outlineVariant.hex }} !important;
   --zen-input-border-color: #{{ outlineVariant.hex }} !important;
 }
@@ -130,13 +127,13 @@ html {
   color: #{{ onPrimary.hex }} !important;
 }
 
-#appMenu-popup,
-.menupopup-arrowscrollbox,
-.panel-arrowcontent {
-  background-color: #{{ surfaceContainer.hex }} !important;
-}
-
 /* New tab background - use surface color instead of transparent */
 .browserStack browser {
   background-color: #{{ surface.hex }} !important;
+}
+
+/* Border around the web content area - match surfaceContainer */
+.browserContainer {
+  border-color: #{{ surfaceContainer.hex }} !important;
+  outline-color: #{{ surfaceContainer.hex }} !important;
 }

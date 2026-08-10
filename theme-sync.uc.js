@@ -21,6 +21,8 @@
   const PREF_CONTRAST = "caelestia.zen-sync.contrast";
   const PREF_TRANSPARENT_ZEN = "caelestia.zen-sync.transparent-zen";
   const PREF_TRANSPARENCY_LEVEL = "caelestia.zen-sync.transparency-level";
+  const PREF_BOOST_ENABLED = "caelestia.zen-sync.boost-enabled";
+  const PREF_BOOST_COLOR = "caelestia.zen-sync.boost-color";
   const BOOST_PREFS = [PREF_SATURATION, PREF_BRIGHTNESS, PREF_CONTRAST];
   const DEFAULT_CHROME_PATH = "/home/dim/.local/state/caelestia/theme/zen-browser.css";
 
@@ -37,6 +39,15 @@
       }
     } catch (e) {}
     return defaultValue;
+  }
+
+  function isBoostEnabled() {
+    return getBoolPref(PREF_BOOST_ENABLED, true);
+  }
+
+  function getBoostColorHex() {
+    const key = getPref(PREF_BOOST_COLOR, "surface");
+    return currentColors[key] || currentColors.surface || null;
   }
 
   function getPref(prefName, defaultValue) {
@@ -179,6 +190,9 @@
       { key: "surfaceContainer", regex: /--caelestia-surfaceContainer:\s*(#[a-fA-F0-9]+)/ },
       { key: "surfaceContainerHigh", regex: /--caelestia-surfaceContainerHigh:\s*(#[a-fA-F0-9]+)/ },
       { key: "surfaceDim", regex: /--caelestia-surfaceDim:\s*(#[a-fA-F0-9]+)/ },
+      { key: "onSurface", regex: /--caelestia-onSurface:\s*(#[a-fA-F0-9]+)/ },
+      { key: "primary", regex: /--caelestia-primary:\s*(#[a-fA-F0-9]+)/ },
+      { key: "outline", regex: /--caelestia-outline:\s*(#[a-fA-F0-9]+)/ },
     ];
 
     for (const { key, regex } of patterns) {
@@ -349,10 +363,10 @@ function applyCaelestiaBoost(surfaceHex) {
       applyToZenBackground();
 
       if (currentColors.surface) {
-        if (getBoolPref(PREF_TRANSPARENT_ZEN, false)) {
+        if (getBoolPref(PREF_TRANSPARENT_ZEN, false) || !isBoostEnabled()) {
           clearBoosts();
         } else {
-          applyCaelestiaBoost(currentColors.surface);
+          applyCaelestiaBoost(getBoostColorHex());
         }
       }
 
@@ -432,6 +446,8 @@ function applyCaelestiaBoost(surfaceHex) {
     Services.prefs.addObserver(PREF_CONTRAST, onBoostSettingsChange);
     Services.prefs.addObserver(PREF_TRANSPARENT_ZEN, onBoostSettingsChange);
     Services.prefs.addObserver(PREF_TRANSPARENCY_LEVEL, onBoostSettingsChange);
+    Services.prefs.addObserver(PREF_BOOST_ENABLED, onBoostSettingsChange);
+    Services.prefs.addObserver(PREF_BOOST_COLOR, onBoostSettingsChange);
     Services.prefs.addObserver(PREF_CHROME_PATH, loadChromeTheme);
 
     const start = () => {
