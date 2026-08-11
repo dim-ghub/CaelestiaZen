@@ -72,13 +72,15 @@ Edit preferences in Sine settings:
 
 ## Recoloring Only Website Backgrounds
 
-The built-in Zen Boost shifts the whole color of every website, which can also affect text and icons. If you prefer to recolor **only the backgrounds** of websites while leaving their text and icons untouched, combine this mod with the [Zen Internet](https://addons.mozilla.org/en-US/firefox/addon/zen-internet/) extension:
+The built-in Zen Boost shifts the overall color scheme of every website, which can affect text and icons. If you prefer to recolor **only the backgrounds** of websites while leaving their text and icons untouched, turn **off** `Enable Website Boost` in the mod's Sine settings (or set `caelestia.zen-sync.boost-enabled` to `false`) and combine the following extensions:
 
-1. Install the Zen Internet extension.
-2. Turn **off** `Enable Website Boost` in the mod's Sine settings (or set `caelestia.zen-sync.boost-enabled` to `false`).
-3. Zen Internet then applies its per-site CSS — recoloring backgrounds to match the transparent chrome while leaving text and icons readable.
+1. **Install Extensions**: Install both [Zen Internet](https://addons.mozilla.org/en-US/firefox/addon/zen-internet/) and [Dark Reader](https://addons.mozilla.org/en-US/firefox/addon/darkreader/).
+2. **Background Tinting via Zen Internet**: Zen Internet applies its per-site CSS — recoloring backgrounds to match the transparent chrome while leaving text and icons readable.
+3. **Theme Enforcement via Dark Reader**:
+   - **Dark Scheme**: Keep Dark Reader in **Dark** mode to ensure sites stay dark and match dark shell setups.
+   - **Light Scheme**: Switch Dark Reader to **Light** mode if using a light scheme for your shell. This forces websites into a light theme so their backgrounds align with a light desktop environment.
 
-Zen Internet injects custom CSS per website (transparency and background tinting) and only touches backgrounds, so it pairs naturally with the surface/surfaceContainer backgrounds applied by this mod.
+Combining both allows Zen Internet to handle surface-matching transparency while Dark Reader forces the overall light/dark theme state based on your active Caelestia scheme.
 
 > **Tip:** You can also keep `Enable Website Boost` **on** and set **Boost Color** to `Primary`, which tints website backgrounds with the accent color while Zen Internet keeps text and icons readable. A good starting point: Color Intensity `150`, Color Brightness `80`, Color Strength `50`.
 
