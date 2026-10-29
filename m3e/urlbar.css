@@ -1,0 +1,262 @@
+/* M3E URL bar: pill search bar at rest; when it breaks out it becomes a
+ * floating xl card with an inset input field, rounded result rows, a
+ * "Switch to tab" chip and pill search-mode buttons (see the mockup).
+ *
+ * The card and its background share one radius and one transition, and the
+ * rest radius is half the bar's height, so opening morphs smoothly instead
+ * of flashing through very-round and square frames. */
+
+:root[caelestia-m3e] {
+  & #urlbar {
+    --caelestia-urlbar-rest-radius: calc(var(--urlbar-height, 40px) / 2);
+    /* open card: concentric with the pill field inset 8px inside it */
+    --caelestia-urlbar-open-radius: 36px;
+    --urlbarview-row-min-height: 48px !important;
+    --urlbarView-highlight-background: var(--md-sys-color-secondary-container) !important;
+    --urlbarView-highlight-color: var(--md-sys-color-on-secondary-container) !important;
+    --urlbarView-hover-background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent) !important;
+    --urlbarView-separator-color: transparent !important;
+    --urlbarView-action-color: var(--md-sys-color-on-surface-variant) !important;
+    --urlbarView-url-color: var(--md-sys-color-on-surface-variant) !important;
+    --autocomplete-popup-separator-color: transparent !important;
+  }
+
+  &[caelestia-shape="standard"] #urlbar {
+    --caelestia-urlbar-rest-radius: var(--md-shape-md);
+  }
+
+  /* ---------- Resting bar ---------- */
+
+  & #urlbar,
+  & #urlbar .urlbar-background {
+    border-radius: var(--caelestia-urlbar-rest-radius) !important;
+    transition: border-radius var(--md-dur-default) var(--md-spring-default-spatial),
+      background-color var(--md-dur-fast) var(--md-easing-effects),
+      box-shadow var(--md-dur-fast) var(--md-easing-effects) !important;
+  }
+
+  & #urlbar .urlbar-background {
+    background-color: var(--md-sys-color-surface-container-high) !important;
+    border: none !important;
+    outline: none !important;
+  }
+
+  & #urlbar:not([breakout-extend]):hover .urlbar-background {
+    background-color: var(--md-sys-color-surface-container-highest) !important;
+  }
+
+  & #urlbar[focused]:not([breakout-extend]) .urlbar-background {
+    background-color: var(--md-sys-color-surface-container-highest) !important;
+    box-shadow: inset 0 0 0 2px var(--md-sys-color-primary) !important;
+  }
+
+  /* ---------- Open: floating card ---------- */
+
+  & #urlbar[breakout-extend],
+  & #urlbar[breakout-extend] .urlbar-background {
+    border-radius: var(--caelestia-urlbar-open-radius) !important;
+  }
+
+  & #urlbar[breakout-extend] .urlbar-background {
+    background-color: var(--md-sys-color-surface-container-high) !important;
+    backdrop-filter: none !important;
+    outline: none !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* Open/close morph: theme-sync.uc.js animates a stand-in card between the
+   * resting bar and the open card (size, position and corner radius on a
+   * spring). While it runs the real card and its contents stay hidden; the
+   * contents then fade in. */
+  & #urlbar[caelestia-morphing] :is(.urlbar-background, .urlbar-input-container, .urlbarView) {
+    opacity: 0 !important;
+  }
+
+  /* No opacity transition here: it would fade the text *out* when the morph
+   * starts, leaving it flickering mid-screen. Contents appear via the reveal
+   * animations once the card has landed. */
+  & #urlbar[caelestia-revealing] .urlbar-input-container {
+    animation: caelestia-reveal-field 280ms var(--md-easing-emphasized-decel) both !important;
+  }
+
+  & #urlbar[caelestia-revealing] .urlbarView-row {
+    animation: caelestia-reveal-row 320ms var(--md-easing-emphasized-decel) both !important;
+  }
+
+  & #urlbar[caelestia-revealing] .urlbarView-row:nth-child(2) { animation-delay: 30ms !important; }
+  & #urlbar[caelestia-revealing] .urlbarView-row:nth-child(3) { animation-delay: 60ms !important; }
+  & #urlbar[caelestia-revealing] .urlbarView-row:nth-child(4) { animation-delay: 90ms !important; }
+  & #urlbar[caelestia-revealing] .urlbarView-row:nth-child(5) { animation-delay: 120ms !important; }
+  & #urlbar[caelestia-revealing] .urlbarView-row:nth-child(n + 6) { animation-delay: 150ms !important; }
+
+  /* Inset input field at the top of the card */
+  & #urlbar[breakout-extend] .urlbar-input-container {
+    background-color: var(--md-sys-color-surface-container-highest) !important;
+    border-radius: var(--caelestia-pill-radius) !important; /* pill search field */
+    margin: 8px 8px 0 !important;
+    width: calc(100% - 16px) !important;
+    padding-inline: 8px !important;
+  }
+
+  & #urlbar[breakout-extend] .urlbar-input {
+    font-weight: 500 !important;
+  }
+
+  & #urlbar[breakout-extend] #identity-icon-box {
+    background: transparent !important;
+  }
+
+  & :is(.urlbarView-body-inner, .urlbarView-results) {
+    border-top: none !important;
+  }
+
+  & .urlbarView-results {
+    padding-block: 6px !important;
+  }
+
+  /* ---------- Result rows ---------- */
+
+  & .urlbarView-row,
+  & .urlbarView-row-inner {
+    border-radius: var(--caelestia-pill-radius) !important; /* pill rows */
+  }
+
+  & .urlbarView-row {
+    transition: background-color var(--md-dur-fast) var(--md-easing-effects) !important;
+  }
+
+  & .urlbarView-row:not([selected]):hover,
+  & .urlbarView-row:not([selected]):hover > .urlbarView-row-inner {
+    background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent) !important;
+  }
+
+  & .urlbarView-row[selected],
+  & .urlbarView-row[selected] > .urlbarView-row-inner {
+    background-color: var(--md-sys-color-secondary-container) !important;
+    color: var(--md-sys-color-on-secondary-container) !important;
+
+    & :is(.urlbarView-title, .urlbarView-url, .urlbarView-action, .urlbarView-title-separator) {
+      color: var(--md-sys-color-on-secondary-container) !important;
+    }
+  }
+
+  & .urlbarView-title {
+    color: var(--md-sys-color-on-surface) !important;
+  }
+
+  & :is(.urlbarView-url, .urlbarView-title-separator)::before,
+  & .urlbarView-url {
+    color: var(--md-sys-color-on-surface-variant) !important;
+  }
+
+  & .urlbarView-row[selected] .urlbarView-title {
+    font-weight: 650 !important;
+  }
+
+  & .urlbarView-favicon {
+    border-radius: var(--md-shape-sm) !important;
+  }
+
+  /* Group labels ("History & bookmarks", "Firefox suggest", …) */
+  & .urlbarView-row[label]::before {
+    color: var(--md-sys-color-on-surface-variant) !important;
+    font-size: 12px !important;
+    font-weight: 650 !important;
+    letter-spacing: 0.5px !important;
+    opacity: 1 !important;
+    margin-inline-start: 12px !important;
+  }
+
+  /* "Switch to tab" becomes a tertiary chip */
+  & .urlbarView-row:is([type="switchtab"], [type="remotetab"]) .urlbarView-action:last-child {
+    background: var(--md-sys-color-tertiary-container) !important;
+    color: var(--md-sys-color-on-tertiary-container) !important;
+    border-radius: var(--caelestia-pill-radius) !important;
+    padding: 4px 14px !important;
+    opacity: 1 !important;
+    scale: 1 !important;
+    margin-right: 8px !important;
+    font-weight: 650 !important;
+
+    &::after {
+      display: none !important;
+    }
+  }
+
+  /* ---------- Search-mode buttons ---------- */
+
+  & #urlbar .search-one-offs {
+    border-top: 1px solid var(--md-sys-color-outline-variant) !important;
+    padding: 8px 8px 4px !important;
+    margin-top: 2px !important;
+  }
+
+  & #urlbar .searchbar-engine-one-off-item,
+  & .urlbarView-searchModeSwitchButton {
+    border-radius: var(--caelestia-pill-radius) !important;
+    border: 1px solid var(--md-sys-color-outline-variant) !important;
+    min-height: 36px !important;
+    min-width: 36px !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent) !important;
+    }
+
+    &:is([selected], [open]) {
+      background-color: var(--md-sys-color-secondary-container) !important;
+      border-color: var(--md-sys-color-secondary-container) !important;
+      color: var(--md-sys-color-on-secondary-container) !important;
+    }
+  }
+
+  & #urlbar-search-mode-indicator {
+    border-radius: var(--caelestia-pill-radius) !important;
+    background-color: var(--md-sys-color-primary-container) !important;
+    color: var(--md-sys-color-on-primary-container) !important;
+    border: none !important;
+  }
+
+  & :is(#identity-box, #tracking-protection-icon-container, .urlbar-page-action, #star-button-box) {
+    border-radius: var(--caelestia-pill-radius) !important;
+  }
+}
+
+#caelestia-urlbar-ghost {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  pointer-events: none;
+  background-color: var(--md-sys-color-surface-container-high);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes caelestia-reveal-field {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes caelestia-reveal-row {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[caelestia-m3e] #urlbar[caelestia-revealing] :is(.urlbar-input-container, .urlbarView-row) {
+    animation: none !important;
+  }
+}

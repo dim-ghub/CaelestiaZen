@@ -1,0 +1,182 @@
+/* M3E Library (Zen's sidebar library: history, downloads, boosts, spaces, media).
+ * Side column becomes a navigation rail with a pill indicator behind the icon;
+ * search is a pill field, filters are chips, rows and space cards get the
+ * M3E shape scale. */
+
+:root[caelestia-m3e] zen-library {
+  --zen-library-pill-bg: var(--md-sys-color-surface-container-high) !important;
+  --zen-library-pill-hover-bg: var(--md-sys-color-surface-container-highest) !important;
+  --zen-library-radius: var(--md-shape-md) !important;
+  color: var(--md-sys-color-on-surface) !important;
+
+  /* ---------- Navigation rail ---------- */
+
+  & #zen-library-side {
+    background: var(--md-sys-color-surface-container) !important;
+    box-shadow: none !important;
+  }
+
+  & #zen-library-content {
+    background-color: var(--md-sys-color-surface-container-low) !important;
+    border-radius: var(--caelestia-panel-radius) !important;
+    margin-block: 8px !important;
+    margin-inline-end: 8px !important;
+  }
+
+  & .zen-library-tab {
+    padding: 12px 0 8px !important;
+    gap: 6px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: var(--md-sys-color-on-surface-variant) !important;
+
+    /* the indicator: a 56×32 pill behind the icon */
+    &::before {
+      inset: 10px calc(50% - 28px) auto !important;
+      height: 32px !important;
+      border-radius: 16px !important;
+      transform: none !important;
+      transition: background-color var(--md-dur-fast) var(--md-easing-effects) !important;
+    }
+
+    &:hover::before {
+      background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent) !important;
+    }
+
+    &[active] {
+      color: var(--md-sys-color-on-surface) !important;
+      font-weight: 650 !important;
+
+      &::before {
+        background: var(--md-sys-color-secondary-container) !important;
+      }
+
+      & .zen-library-tab-icon-image {
+        fill: var(--md-sys-color-on-secondary-container) !important;
+      }
+    }
+  }
+
+  /* ---------- Search and filters ---------- */
+
+  & .zen-library-search-box {
+    height: 44px !important;
+    border-radius: var(--caelestia-pill-radius) !important;
+    background: var(--md-sys-color-surface-container-high) !important;
+    padding-inline: 16px !important;
+
+    &:focus-within {
+      background: var(--md-sys-color-surface-container-highest) !important;
+      box-shadow: inset 0 0 0 2px var(--md-sys-color-primary) !important;
+    }
+  }
+
+  & .zen-library-filter-button {
+    height: 44px !important;
+    border-radius: var(--caelestia-pill-radius) !important;
+    background: var(--md-sys-color-secondary-container) !important;
+    color: var(--md-sys-color-on-secondary-container) !important;
+  }
+
+  & .zen-library-filter-done {
+    border-radius: var(--caelestia-pill-radius) !important;
+    background: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-on-primary) !important;
+  }
+
+  & .zen-library-filter-group h3,
+  & .zen-library-group h3 {
+    font-size: 12px !important;
+    font-weight: 650 !important;
+    letter-spacing: 0.5px !important;
+    color: var(--md-sys-color-on-surface-variant) !important;
+    opacity: 1 !important;
+  }
+
+  /* Filter chips: outlined pill → filled tonal, rounded-rect when selected */
+  & .zen-library-filter-chip {
+    border-radius: 17px !important;
+    background: transparent !important;
+    box-shadow: inset 0 0 0 1px var(--md-sys-color-outline-variant) !important;
+    transition: var(--caelestia-shape-transition) !important;
+
+    &:hover {
+      background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent) !important;
+    }
+
+    &[active] {
+      border-radius: var(--md-shape-sm) !important;
+      background: var(--md-sys-color-secondary-container) !important;
+      color: var(--md-sys-color-on-secondary-container) !important;
+      box-shadow: none !important;
+    }
+  }
+
+  & .zen-library-routing-form-buttons button {
+    border-radius: var(--caelestia-pill-radius) !important;
+  }
+
+  & .zen-library-search-results[scrolled] {
+    border-top-color: var(--md-sys-color-outline-variant) !important;
+  }
+
+  /* ---------- Rows ---------- */
+
+  & .zen-library-row {
+    border-radius: var(--md-shape-lg) !important;
+
+    &:hover {
+      background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent) !important;
+    }
+  }
+
+  & .zen-library-row-icon {
+    border-radius: var(--md-shape-xs) !important;
+  }
+
+  & .zen-library-boost-row {
+    border-radius: var(--md-shape-lg-plus) !important;
+    background: var(--md-sys-color-surface-container-high) !important;
+    margin-block: 4px !important;
+  }
+
+  & .zen-library-boost-icon::before {
+    border-radius: var(--md-shape-md) !important;
+    background: var(--md-sys-color-primary-container) !important;
+  }
+
+  & .zen-library-row-actions moz-toggle {
+    --toggle-background-color-pressed: var(--md-sys-color-primary) !important;
+    --toggle-dot-background-color-on-pressed: var(--md-sys-color-on-primary) !important;
+    --toggle-background-color: var(--md-sys-color-surface-container-highest) !important;
+    --toggle-border-color: var(--md-sys-color-outline) !important;
+    --toggle-dot-background-color: var(--md-sys-color-outline) !important;
+  }
+
+  /* ---------- Spaces ---------- */
+
+  & .zen-library-space,
+  & .zen-library-space > .zen-library-space-background {
+    border-radius: var(--caelestia-panel-radius) !important;
+  }
+
+  & .zen-library-space-header::before {
+    border-radius: var(--md-shape-lg) !important;
+  }
+
+  & .zen-library-space-icon {
+    border-radius: var(--md-shape-sm) !important;
+  }
+
+  /* ---------- Media ---------- */
+
+  & :is(.zen-library-media-item, .zen-library-media-frame, .zen-library-media-thumb) {
+    border-radius: var(--md-shape-lg) !important;
+  }
+
+  & .zen-library-media-opt-in-button {
+    border-radius: var(--caelestia-pill-radius) !important;
+    background: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-on-primary) !important;
+  }
+}

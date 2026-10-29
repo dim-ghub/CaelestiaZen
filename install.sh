@@ -297,7 +297,7 @@ install_sine() {
     require_cmd python3
 
     # Check if Sine already installed
-    if [[ -f "$BROWSER_INSTALL_DIR/config.js" && -d "$PROFILE_DIR/chrome/engine" ]]; then
+    if [[ -f "$BROWSER_INSTALL_DIR/config.js" && ( -d "$PROFILE_DIR/chrome/JS" || -d "$PROFILE_DIR/chrome/engine" ) ]]; then
         warn "Sine appears to already be installed."
         read -r -p "Reinstall? [y/N]: " reinstall
         if [[ ! "$reinstall" =~ ^[Yy]$ ]]; then
@@ -380,25 +380,32 @@ install_mod() {
     info "Installing mod to: $MOD_DIR"
 
     mkdir -p "$MOD_DIR"
-    mkdir -p "$XDG_CONFIG_HOME/caelestia/templates"
 
     export MODS_JSON="$PROFILE_DIR/chrome/sine-mods/mods.json"
     export SCRIPT_DIR
 
+    rm -rf "$MOD_DIR/m3e"
     if [[ "$DEV_MODE" == true ]]; then
         ln -sf "$SCRIPT_DIR/theme.json" "$MOD_DIR/"
         ln -sf "$SCRIPT_DIR/theme-sync.uc.js" "$MOD_DIR/"
         ln -sf "$SCRIPT_DIR/preferences.json" "$MOD_DIR/"
         ln -sf "$SCRIPT_DIR/chrome.css" "$MOD_DIR/"
-        ln -sf "$SCRIPT_DIR/templates/zen-browser.css" "$XDG_CONFIG_HOME/caelestia/templates/"
+        ln -sfn "$SCRIPT_DIR/m3e" "$MOD_DIR/m3e"
         ok "Installed in DEV mode (symlinks)"
     else
         cp "$SCRIPT_DIR/theme.json" "$MOD_DIR/"
         cp "$SCRIPT_DIR/theme-sync.uc.js" "$MOD_DIR/"
         cp "$SCRIPT_DIR/preferences.json" "$MOD_DIR/"
         cp "$SCRIPT_DIR/chrome.css" "$MOD_DIR/"
-        cp "$SCRIPT_DIR/templates/zen-browser.css" "$XDG_CONFIG_HOME/caelestia/templates/"
+        cp -r "$SCRIPT_DIR/m3e" "$MOD_DIR/"
         ok "Installed (copied)"
+    fi
+
+    # Colors are now read from Caelestia's scheme.json; remove the old template.
+    local old_template="$XDG_CONFIG_HOME/caelestia/templates/zen-browser.css"
+    if [[ -L "$old_template" ]] || { [[ -f "$old_template" ]] && grep -q "Caelestia Theme for Zen Browser" "$old_template"; }; then
+        rm -f "$old_template"
+        ok "Removed old Caelestia template (no longer needed)"
     fi
 
     if [[ -f "$MODS_JSON" ]]; then

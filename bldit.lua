@@ -1,6 +1,6 @@
 package_name = "CaelestiaZen"
 bldit_version = "0.1.3"
-package_version = "1.0.0"
+package_version = "2.0.0"
 global_dependencies = { "curl", "unzip", "python" }
 dependencies = {}
 

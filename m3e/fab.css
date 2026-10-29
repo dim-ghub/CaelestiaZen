@@ -1,0 +1,156 @@
+/* M3E FAB menu: Zen's "create new" button (new space, new folder, new split,
+ * new tab).
+ *
+ * The button is a small surface FAB (the calm M3 variant: a tonal surface with a
+ * primary icon) that morphs to a secondary-container circle while its menu is
+ * open (Zen already rotates its + into ×).
+ * The menu is a stack of standalone pill items that spring up one after
+ * another from the FAB, the closest one first. */
+
+:root[caelestia-m3e] {
+  & #zen-create-new-button {
+    background: transparent !important;
+
+    & > .toolbarbutton-icon {
+      width: 40px !important;
+      height: 40px !important;
+      padding: 12px !important;
+      border-radius: var(--md-shape-md) !important;
+      background-color: var(--md-sys-color-surface-container-highest) !important;
+      fill: var(--md-sys-color-primary) !important;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+      transition: var(--caelestia-shape-transition) !important;
+    }
+
+    &:not([open]):hover > .toolbarbutton-icon {
+      background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, var(--md-sys-color-surface-container-highest)) !important;
+    }
+
+    &:not([open]):active > .toolbarbutton-icon {
+      border-radius: var(--md-shape-sm) !important;
+    }
+
+    &[open] > .toolbarbutton-icon {
+      border-radius: 20px !important; /* circle */
+      background-color: var(--md-sys-color-secondary-container) !important;
+      fill: var(--md-sys-color-on-secondary-container) !important;
+    }
+  }
+
+  &[caelestia-shape="standard"] #zen-create-new-button > .toolbarbutton-icon {
+    border-radius: var(--md-shape-sm) !important;
+  }
+
+  /* ---------- The menu ---------- */
+
+  & #zenCreateNewPopup {
+    --panel-background: transparent !important;
+    --panel-background-color: transparent !important;
+    --panel-box-shadow: none !important;
+    --panel-border-color: transparent !important;
+    --panel-padding: 0 !important;
+
+    & > menuseparator {
+      display: none !important;
+    }
+
+    & > menuitem {
+      align-self: flex-start !important;
+      min-height: 48px !important;
+      height: 48px !important;
+      margin: 0 0 4px !important;
+      padding: 0 20px 0 16px !important;
+      border-radius: 24px !important; /* half the 48px height */
+      background-color: var(--md-sys-color-surface-container-highest) !important;
+      color: var(--md-sys-color-on-surface) !important;
+      fill: var(--md-sys-color-primary) !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      transform-origin: left bottom;
+
+      /* breathing room between the stack and the FAB below it */
+      &:last-of-type {
+        margin-bottom: 8px !important;
+      }
+
+      &:is([_moz-menuactive], :hover) {
+        background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, var(--md-sys-color-surface-container-highest)) !important;
+        color: var(--md-sys-color-on-surface) !important;
+      }
+
+      &::before {
+        display: none !important;
+      }
+
+      & :is(img, .menu-icon, .menu-iconic-icon) {
+        width: 20px !important;
+        height: 20px !important;
+        margin-inline-end: 12px !important;
+        fill: var(--md-sys-color-primary) !important;
+      }
+    }
+
+    /* Opening toward the content with a left sidebar: hug the FAB's end edge */
+    &[caelestia-align-end] > menuitem {
+      align-self: flex-end !important;
+      transform-origin: right bottom;
+    }
+
+    /* Close: items collapse back into the FAB (theme-sync.uc.js holds the
+     * popup open for 160ms) */
+    &[caelestia-opening][caelestia-closing] > menuitem:nth-last-of-type(n) {
+      animation: caelestia-fab-item-out 160ms var(--md-easing-effects) both !important;
+      animation-delay: 0ms !important;
+    }
+
+    /* hidden until the popup is on screen (see theme-sync.uc.js) */
+    &[caelestia-pending] > menuitem {
+      opacity: 0 !important;
+    }
+
+    /* Staggered spring-in, closest to the FAB first */
+    &[caelestia-opening] > menuitem {
+      animation: caelestia-fab-item var(--md-dur-default) var(--md-spring-fast-spatial) both !important;
+    }
+
+    &[caelestia-opening] > menuitem:nth-last-of-type(2) {
+      animation-delay: 35ms !important;
+    }
+
+    &[caelestia-opening] > menuitem:nth-last-of-type(3) {
+      animation-delay: 70ms !important;
+    }
+
+    &[caelestia-opening] > menuitem:nth-last-of-type(4) {
+      animation-delay: 105ms !important;
+    }
+
+    &[caelestia-opening] > menuitem:nth-last-of-type(n + 5) {
+      animation-delay: 140ms !important;
+    }
+  }
+}
+
+@keyframes caelestia-fab-item {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes caelestia-fab-item-out {
+  to {
+    opacity: 0;
+    transform: translateY(10px) scale(0.85);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[caelestia-m3e] #zenCreateNewPopup[caelestia-opening] > menuitem {
+    animation: caelestia-fade-in var(--md-dur-fast) linear both !important;
+  }
+}

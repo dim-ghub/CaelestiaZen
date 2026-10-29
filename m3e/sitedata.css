@@ -1,0 +1,198 @@
+/* M3E site-data / extensions panel (Zen's #zen-unified-site-data-panel).
+ *
+ * The panel itself is transparent (see parts.css) and its pieces float:
+ *   - header: share / reader mode / screenshot / bookmark as an M3E
+ *     connected button group (pill ends, small inner corners; a pressed or
+ *     active button morphs to a full pill)
+ *   - sections (Extensions, permissions, boosts): tonal cards; extension
+ *     tiles are rounded squares that morph to pills on press
+ *   - footer: security info / boost / actions as another connected group */
+
+:root[caelestia-m3e] {
+  & #zen-unified-site-data-panel {
+    --panel-background: transparent !important;
+    --panel-background-color: transparent !important;
+    --arrowpanel-background: transparent !important;
+    --panel-box-shadow: none !important;
+    --caelestia-seg-outer: 22px; /* half the 44px button height */
+    --caelestia-seg-inner: 6px;
+
+    & :is(panelmultiview, .panel-viewcontainer, .panel-viewstack, panelview) {
+      background: transparent !important;
+    }
+  }
+
+  /* ---------- Header: connected button group ---------- */
+
+  & #zen-site-data-header {
+    gap: 2px !important;
+    padding: 0 0 4px !important;
+
+    & > toolbarbutton {
+      flex: 1 !important;
+      width: auto !important;
+      height: 44px !important;
+      color: var(--md-sys-color-on-surface) !important;
+
+      &::before {
+        inset: 0 !important;
+        transform: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: var(--md-sys-color-surface-container-high) !important;
+        border-radius: var(--caelestia-seg-inner) !important;
+        transition: var(--caelestia-shape-transition) !important;
+      }
+
+      &:hover::before {
+        background: var(--md-sys-color-surface-container-highest) !important;
+      }
+
+      &:is(:active, .active)::before {
+        border-radius: var(--caelestia-seg-outer) !important;
+      }
+
+      &.active {
+        color: var(--md-sys-color-on-primary) !important;
+
+        &::before {
+          background: var(--md-sys-color-primary) !important;
+        }
+      }
+    }
+
+    /* Pill ends. Zen lays this row out reversed with a left single-toolbar
+     * sidebar, so the visual ends swap there. */
+    & > toolbarbutton:first-child::before {
+      border-top-left-radius: var(--caelestia-seg-outer) !important;
+      border-bottom-left-radius: var(--caelestia-seg-outer) !important;
+    }
+
+    & > toolbarbutton:last-child::before {
+      border-top-right-radius: var(--caelestia-seg-outer) !important;
+      border-bottom-right-radius: var(--caelestia-seg-outer) !important;
+    }
+  }
+
+  &[zen-single-toolbar="true"]:not([zen-right-side="true"]) #zen-site-data-header {
+    & > toolbarbutton:first-child:not(:active, .active)::before {
+      border-top-left-radius: var(--caelestia-seg-inner) !important;
+      border-bottom-left-radius: var(--caelestia-seg-inner) !important;
+      border-top-right-radius: var(--caelestia-seg-outer) !important;
+      border-bottom-right-radius: var(--caelestia-seg-outer) !important;
+    }
+
+    & > toolbarbutton:last-child:not(:active, .active)::before {
+      border-top-right-radius: var(--caelestia-seg-inner) !important;
+      border-bottom-right-radius: var(--caelestia-seg-inner) !important;
+      border-top-left-radius: var(--caelestia-seg-outer) !important;
+      border-bottom-left-radius: var(--caelestia-seg-outer) !important;
+    }
+  }
+
+  /* ---------- Sections: tonal cards ---------- */
+
+  & #zen-unified-site-data-panel .zen-site-data-section {
+    background: var(--md-sys-color-surface-container) !important;
+    border-radius: var(--md-shape-lg-plus) !important;
+    padding: 12px !important;
+    margin: 0 0 4px !important;
+    gap: 8px !important;
+  }
+
+  & .zen-site-data-section-header {
+    & > label:first-child {
+      font-size: 12px !important;
+      font-weight: 650 !important;
+      letter-spacing: 0.5px !important;
+      color: var(--md-sys-color-on-surface-variant) !important;
+    }
+
+    /* "Manage": always-visible text button */
+    & > label:nth-child(2) {
+      opacity: 1 !important;
+      color: var(--md-sys-color-primary) !important;
+      font-weight: 600 !important;
+      padding: 3px 10px !important;
+      border-radius: 12px !important;
+
+      &:hover {
+        background-color: color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent) !important;
+      }
+    }
+  }
+
+  /* Extension tiles */
+  & #zen-site-data-addons {
+    gap: 6px !important;
+
+    & :is(#overflowed-extensions-list, #unified-extensions-area, .unified-extensions-list, #zen-site-data-new-addon-button-container) > * {
+      width: 48px !important;
+      height: 44px !important;
+      background-color: var(--md-sys-color-surface-container-high) !important;
+      border-radius: var(--md-shape-md) !important;
+      transform: none !important;
+      transition: var(--caelestia-shape-transition) !important;
+
+      & toolbarbutton {
+        border-radius: inherit !important;
+      }
+
+      &:hover {
+        background-color: var(--md-sys-color-surface-container-highest) !important;
+      }
+
+      &:active {
+        border-radius: 22px !important;
+      }
+    }
+
+    & #zen-site-data-new-addon-button {
+      background-color: var(--md-sys-color-secondary-container) !important;
+      fill: var(--md-sys-color-on-secondary-container) !important;
+      color: var(--md-sys-color-on-secondary-container) !important;
+    }
+  }
+
+  & :is(#zen-site-data-settings-list, #zen-site-data-boost-list) toolbarseparator {
+    border-color: var(--md-sys-color-outline-variant) !important;
+  }
+
+  /* ---------- Footer: connected button group ---------- */
+
+  & #zen-site-data-footer {
+    border-top: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 2px !important;
+
+    & > toolbarbutton {
+      height: 44px !important;
+      min-width: 48px !important;
+      justify-content: center !important;
+      background-color: var(--md-sys-color-surface-container-high) !important;
+      color: var(--md-sys-color-on-surface) !important;
+      border-radius: var(--caelestia-seg-inner) !important;
+      transition: var(--caelestia-shape-transition) !important;
+
+      &:hover {
+        background-color: var(--md-sys-color-surface-container-highest) !important;
+      }
+
+      &:active {
+        border-radius: var(--caelestia-seg-outer) !important;
+      }
+
+      &:first-child {
+        flex: 1 !important;
+        border-top-left-radius: var(--caelestia-seg-outer) !important;
+        border-bottom-left-radius: var(--caelestia-seg-outer) !important;
+      }
+
+      &:last-child {
+        border-top-right-radius: var(--caelestia-seg-outer) !important;
+        border-bottom-right-radius: var(--caelestia-seg-outer) !important;
+      }
+    }
+  }
+}
