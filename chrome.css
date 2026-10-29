@@ -1,2 +1,21 @@
-/* Caelestia Theme Sync - Chrome CSS */
-/* Additional chrome styles can be added here */
+/* CaelestiaZen - chrome stylesheet entry point.
+ *
+ * Loaded by Sine as a user sheet, so every override needs !important to
+ * win over Zen's author styles. theme-sync.uc.js writes the
+ * --md-sys-color-* variables and these root attributes:
+ *   caelestia-theme-active   scheme.json loaded           (bridge.css)
+ *   caelestia-background     solid | transparent          (bridge.css)
+ *   caelestia-m3e            M3 Expressive UI enabled      (m3e/*)
+ *   caelestia-shape          expressive | standard
+ *   caelestia-density        comfortable | compact
+ */
+
+@import "m3e/bridge.css";
+@import "m3e/tokens.css";
+@import "m3e/sidebar.css";
+@import "m3e/urlbar.css";
+@import "m3e/menus.css";
+@import "m3e/library.css";
+@import "m3e/fab.css";
+@import "m3e/sitedata.css";
+@import "m3e/controls.css";

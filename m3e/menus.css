@@ -1,0 +1,327 @@
+/* M3E menus, panels, dialogs and the toast-as-snackbar. */
+
+:root[caelestia-m3e] {
+  & :is(menupopup, panel) {
+    --panel-border-radius: var(--caelestia-menu-radius) !important;
+    --panel-background: var(--md-sys-color-surface-container) !important;
+    --panel-background-color: var(--md-sys-color-surface-container) !important;
+    --panel-color: var(--md-sys-color-on-surface) !important;
+    --panel-border-color: transparent !important;
+    --menuitem-border-radius: var(--caelestia-menuitem-radius) !important;
+    --menuitem-hover-background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent) !important;
+    --menuitem-active-background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent) !important;
+    --arrowpanel-menuitem-border-radius: var(--caelestia-menuitem-radius) !important;
+    --panel-separator-color: var(--md-sys-color-outline-variant) !important;
+  }
+
+  /* Hovered / keyboard-active items keep the scheme's text color instead of
+   * the system "menu hover text" color. */
+  & :is(menupopup, panel) :is(menuitem, menu, .subviewbutton):is([_moz-menuactive], :hover):not([disabled]) {
+    color: var(--md-sys-color-on-surface) !important;
+  }
+
+  /* Larger arrow panels (app menu, extensions, downloads, site info) */
+  & panel:is([type="arrow"], .panel-no-padding) {
+    --panel-border-radius: var(--caelestia-panel-radius) !important;
+    --panel-padding: 8px !important;
+  }
+
+  /* ---------- Segmented menus and panels ----------
+   * Material 3 Expressive vertical menu, after Compose's SegmentedMenuTokens /
+   * MenuDefaults (androidx-main):
+   *   gap between groups 2dp; group vertical padding 4dp; item height 48dp
+   *   group: leading 16/8, middle 8, trailing 8/16, standalone 16 (top/bottom)
+   *   once hovered, groups not under the pointer morph to 8 ("inactive")
+   *   item highlight: leading 12/4, middle 4, trailing 4/12, selected 12
+   * Every dp value is multiplied by --caelestia-menu-scale (item height / 48),
+   * so the rounding keeps the spec's proportions at our item size.
+   *
+   * theme-sync.uc.js marks items (see segment()); the popup is transparent
+   * and each item paints its group's container, so groups float on their own
+   * and separators become the gaps. */
+
+  & :is(menupopup[caelestia-segmented], #appMenu-popup) {
+    --caelestia-menu-container: var(--md-sys-color-surface-container-high);
+    --caelestia-dp: calc(1px * var(--caelestia-menu-scale));
+    --caelestia-group-outer: calc(16 * var(--caelestia-dp));
+    --caelestia-group-inner: calc(8 * var(--caelestia-dp));
+    --caelestia-item-outer: calc(12 * var(--caelestia-dp));
+    --caelestia-item-inner: calc(4 * var(--caelestia-dp));
+    --caelestia-group-pad: calc(4 * var(--caelestia-dp));
+    --caelestia-group-gap: max(2px, calc(2 * var(--caelestia-dp)));
+    --panel-background: transparent !important;
+    --panel-background-color: transparent !important;
+    --arrowpanel-background: transparent !important;
+    --panel-box-shadow: none !important;
+    --panel-padding: 0 !important;
+    --menuitem-padding: 0 12px !important;
+    --arrowpanel-menuitem-margin: 0 !important;
+  }
+
+  & #appMenu-popup :is(panelmultiview, .panel-viewcontainer, .panel-viewstack, panelview, .panel-subview-body) {
+    background: transparent !important;
+  }
+
+  & #appMenu-popup panelview[caelestia-segmented] .panel-subview-body {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  & :is(menupopup[caelestia-segmented] > *, panelview[caelestia-segmented] *)[caelestia-seg-item] {
+    --caelestia-hl-top: var(--caelestia-item-inner);
+    --caelestia-hl-bottom: var(--caelestia-item-inner);
+    position: relative !important;
+    isolation: isolate !important;
+    margin: 0 !important;
+    min-height: calc(48 * var(--caelestia-dp)) !important;
+    border-radius: 0 !important;
+    border: 0 solid var(--caelestia-menu-container) !important;
+    background-color: var(--caelestia-menu-container) !important;
+    color: var(--md-sys-color-on-surface) !important;
+
+    /* state layer / selection highlight, inset 4dp from the group sides */
+    &::before {
+      content: "" !important;
+      position: absolute !important;
+      inset: 0 calc(4 * var(--caelestia-dp)) !important;
+      z-index: -1 !important;
+      border-radius: var(--caelestia-hl-top) var(--caelestia-hl-top) var(--caelestia-hl-bottom) var(--caelestia-hl-bottom) !important;
+      background-color: transparent;
+      transition: background-color var(--md-dur-fast) var(--md-easing-effects),
+        border-radius var(--md-dur-default) var(--md-spring-fast-spatial) !important;
+      pointer-events: none !important;
+    }
+
+    /* KiiteShell's row hover: the highlight lifts in and its corners round
+     * up on a spring (12 → 20 there; spec-scaled here). */
+    &:is([_moz-menuactive], :hover):not([disabled], toolbaritem)::before {
+      background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 10%, transparent) !important;
+      border-radius: calc(20 * var(--caelestia-dp)) !important;
+    }
+
+    /* icons in primary, as in KiiteShell's menus */
+    & :is(.menu-icon, .menu-iconic-icon, .toolbarbutton-icon) {
+      fill: var(--md-sys-color-primary) !important;
+    }
+
+    &:is([_moz-menuactive], :hover):not([disabled], toolbaritem):active::before {
+      background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent) !important;
+    }
+
+    /* selected / open submenu: tertiary container, fully 12dp */
+    &:is([open], [checked="true"]) {
+      --caelestia-hl-top: var(--caelestia-item-outer);
+      --caelestia-hl-bottom: var(--caelestia-item-outer);
+      color: var(--md-sys-color-on-tertiary-container) !important;
+
+      &::before {
+        background-color: var(--md-sys-color-tertiary-container) !important;
+      }
+    }
+
+    &[disabled] {
+      color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent) !important;
+    }
+
+    /* group edges: 4dp padding band; gap-facing corners 8dp */
+    &[caelestia-group-start] {
+      --caelestia-hl-top: var(--caelestia-item-outer);
+      border-top-width: var(--caelestia-group-pad) !important;
+      border-start-start-radius: var(--caelestia-group-inner) !important;
+      border-start-end-radius: var(--caelestia-group-inner) !important;
+    }
+
+    &[caelestia-group-end] {
+      --caelestia-hl-bottom: var(--caelestia-item-outer);
+      border-bottom-width: var(--caelestia-group-pad) !important;
+      border-end-start-radius: var(--caelestia-group-inner) !important;
+      border-end-end-radius: var(--caelestia-group-inner) !important;
+    }
+
+    /* a one-item group uses the standalone (middle) item shape */
+    &[caelestia-group-start][caelestia-group-end]:not([open], [checked="true"]) {
+      --caelestia-hl-top: var(--caelestia-item-inner);
+      --caelestia-hl-bottom: var(--caelestia-item-inner);
+    }
+
+    /* the menu's outermost corners are 16dp... */
+    &[caelestia-menu-first] {
+      border-start-start-radius: var(--caelestia-group-outer) !important;
+      border-start-end-radius: var(--caelestia-group-outer) !important;
+    }
+
+    &[caelestia-menu-last] {
+      border-end-start-radius: var(--caelestia-group-outer) !important;
+      border-end-end-radius: var(--caelestia-group-outer) !important;
+    }
+  }
+
+  /* ...until the menu has been hovered: then only the group under the pointer
+   * keeps its shape and the rest morph to the inactive 8dp. */
+  /* Radii only animate once hovered: segmenting re-measures with our rules
+   * briefly off, and an always-on transition would replay that on every open. */
+  & :is(menupopup, panelview)[caelestia-hovered] [caelestia-seg-item] {
+    transition: border-radius var(--md-dur-default) var(--md-spring-fast-spatial) !important;
+  }
+
+  & :is(menupopup, panelview)[caelestia-hovered] [caelestia-seg-item]:not([caelestia-group-hover]) {
+    &[caelestia-menu-first] {
+      border-start-start-radius: var(--caelestia-group-inner) !important;
+      border-start-end-radius: var(--caelestia-group-inner) !important;
+    }
+
+    &[caelestia-menu-last] {
+      border-end-start-radius: var(--caelestia-group-inner) !important;
+      border-end-end-radius: var(--caelestia-group-inner) !important;
+    }
+  }
+
+  /* App-menu header (back button + title) and inline button rows */
+  & panelview[caelestia-segmented] .panel-header[caelestia-seg-item] {
+    padding-block: 4px !important;
+  }
+
+  & panelview[caelestia-segmented] .toolbaritem-combined-buttons[caelestia-seg-item] {
+    padding-inline: 16px 8px !important;
+    gap: 2px !important;
+
+    & > toolbarbutton {
+      border-radius: var(--caelestia-item-inner) !important;
+      background-color: var(--md-sys-color-surface-container-highest) !important;
+      margin: 0 !important;
+
+      &:first-of-type {
+        border-start-start-radius: 16px !important;
+        border-end-start-radius: 16px !important;
+      }
+
+      &:last-of-type {
+        border-start-end-radius: 16px !important;
+        border-end-end-radius: 16px !important;
+      }
+
+      &:hover {
+        background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, var(--md-sys-color-surface-container-highest)) !important;
+      }
+    }
+  }
+
+  & menupopup[caelestia-segmented] > menuseparator:not([caelestia-gap]),
+  & panelview[caelestia-segmented] toolbarseparator:not([caelestia-gap]) {
+    display: none !important;
+  }
+
+  & :is(menupopup[caelestia-segmented] > menuseparator, panelview[caelestia-segmented] toolbarseparator)[caelestia-gap] {
+    display: flex !important;
+    appearance: none !important;
+    height: var(--caelestia-group-gap) !important;
+    min-height: var(--caelestia-group-gap) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+
+    &::before {
+      display: none !important;
+    }
+  }
+
+  & :is(menupopup, panel)[caelestia-pending] [caelestia-seg-item] > * {
+    opacity: 0 !important;
+  }
+
+  /* Open: rows drop in one after another (KiiteShell's popup menu). Only the
+   * row contents move, so the group backgrounds stay solid. */
+  & :is(menupopup, panel)[caelestia-opening]:not([caelestia-closing]) [caelestia-seg-item] > * {
+    animation: caelestia-row-drop 260ms cubic-bezier(0.33, 1, 0.68, 1) both !important;
+    animation-delay: calc(50ms + min(var(--caelestia-i, 0), 12) * 35ms) !important;
+  }
+
+  /* Unsegmented menus (inside menulists) keep simple rounded items */
+  & menupopup:not([caelestia-segmented]) :is(menuitem, menu) {
+    border-radius: var(--caelestia-menuitem-radius) !important;
+  }
+
+  & :is(.subviewbutton, .panel-banner-item, .addon-banner-item, .unified-extensions-item-action-button) {
+    border-radius: var(--caelestia-menuitem-radius) !important;
+  }
+
+  & .panel-header > h1 {
+    font-weight: 650 !important;
+  }
+
+  /* Dialogs */
+  & :is(.dialogBox, #window-modal-dialog) {
+    border-radius: var(--caelestia-panel-radius) !important;
+    background-color: var(--md-sys-color-surface-container-high) !important;
+  }
+
+  & :is(.popup-notification-primary-button, .popup-notification-secondary-button, .panel-footer button, .footer-button) {
+    border-radius: var(--caelestia-pill-radius) !important;
+  }
+
+  & :is(.popup-notification-primary-button, .panel-footer button[default], .footer-button[default]) {
+    background-color: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-on-primary) !important;
+  }
+
+  & :is(.popup-notification-secondary-button, .panel-footer button:not([default])) {
+    background-color: var(--md-sys-color-secondary-container) !important;
+    color: var(--md-sys-color-on-secondary-container) !important;
+  }
+
+  /* Toasts → snackbar */
+  & #zen-toast-container .zen-toast {
+    background: var(--md-sys-color-inverse-surface) !important;
+    color: var(--md-sys-color-inverse-on-surface) !important;
+    border-radius: var(--md-shape-md) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+
+    & label span {
+      background: color-mix(in srgb, var(--md-sys-color-inverse-on-surface) 14%, transparent) !important;
+    }
+
+    & button {
+      background: transparent !important;
+      color: var(--md-sys-color-inverse-primary) !important;
+      border: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+      border-radius: var(--caelestia-pill-radius) !important;
+
+      & .button-icon {
+        fill: var(--md-sys-color-inverse-primary) !important;
+        opacity: 1 !important;
+      }
+    }
+  }
+}
+
+@keyframes caelestia-menu-in {
+  from {
+    transform: scaleY(0.7) translateY(-4px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes caelestia-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes caelestia-row-drop {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}

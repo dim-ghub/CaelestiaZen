@@ -1,0 +1,114 @@
+/* M3 Expressive tokens: shape, motion, state layers, type.
+ * Components only use these; Shape/Density options swap token values. */
+
+@property --caelestia-ripple-r {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --caelestia-ripple-a {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+:root[caelestia-m3e] {
+  /* shape scale */
+  --md-shape-xs: 4px !important;
+  --md-shape-sm: 8px !important;
+  --md-shape-md: 12px !important;
+  --md-shape-lg: 16px !important;
+  --md-shape-lg-plus: 20px !important;
+  --md-shape-xl: 28px !important;
+  --md-shape-xl-plus: 32px !important;
+  --md-shape-full: 9999px !important;
+
+  /* component shapes (expressive defaults) */
+  --caelestia-tab-radius-selected: 13px !important; /* pill (16px) → 13px: rounder, but not a pill */
+  --caelestia-tab-radius-pressed: var(--md-shape-sm) !important; /* 8px */
+  --caelestia-tile-radius: var(--md-shape-lg) !important;
+  --caelestia-tile-radius-selected: var(--md-shape-xl) !important;
+  --caelestia-pill-radius: var(--md-shape-full) !important; /* static pills only, never animated */
+  --caelestia-button-radius: 50% !important; /* icon buttons are square: 50% is a circle and animates cleanly */
+  --caelestia-button-radius-pressed: var(--md-shape-sm) !important;
+  --caelestia-segment-inner: 10px !important;
+  --caelestia-segment-outer: 18px !important; /* half the 36px segment height */
+  --caelestia-menu-radius: var(--md-shape-lg) !important;
+  --caelestia-segment-gap-radius: var(--md-shape-xs) !important; /* small inner corners */
+  /* menu dp → px: our item height over the spec's 48dp (32 / 48), so rows
+   * stay the size Zen's menus always had and the radii keep spec proportions */
+  --caelestia-menu-scale: 0.6667 !important;
+  --caelestia-menuitem-radius: var(--md-shape-md) !important;
+  --caelestia-panel-radius: var(--md-shape-xl) !important;
+  --caelestia-content-radius: var(--md-shape-lg-plus) !important;
+
+  /* motion: CSS approximations of M3E springs */
+  --md-spring-fast-spatial: linear(0, 0.35 12%, 0.86 28%, 1.06 42%, 1.02 60%, 1) !important;
+  --md-spring-default-spatial: linear(0, 0.24 12%, 0.72 30%, 1.04 50%, 1.01 70%, 1) !important;
+  --md-easing-effects: cubic-bezier(0.2, 0, 0, 1) !important;
+  --md-easing-emphasized-decel: cubic-bezier(0.05, 0.7, 0.1, 1) !important;
+  --md-dur-fast: 200ms !important;
+  --md-dur-default: 350ms !important;
+  --md-dur-slow: 500ms !important;
+  /* Springs are safe on radii as long as nothing animates from a huge "full"
+   * value: pills use half the element height, so overshoot stays positive. */
+  --caelestia-shape-transition: border-radius var(--md-dur-default) var(--md-spring-default-spatial),
+    background-color var(--md-dur-fast) var(--md-easing-effects),
+    color var(--md-dur-fast) var(--md-easing-effects) !important;
+
+  /* state layers */
+  --md-state-hover: color-mix(in srgb, currentColor 8%, transparent) !important;
+  --md-state-pressed: color-mix(in srgb, currentColor 12%, transparent) !important;
+
+  /* density */
+  --caelestia-tab-height: 40px !important;
+  --caelestia-tile-height: 52px !important;
+
+  /* type */
+  --md-font: "Google Sans Flex", "Google Sans", "Roboto Flex", system-ui, sans-serif !important;
+  font-family: var(--md-font) !important;
+
+  /* Zen's own shape variables */
+  --zen-squircle-value: 1 !important; /* superellipse(1) == round */
+  --zen-active-tab-scale: 1 !important; /* no press bounce; ripple instead */
+  --border-radius-medium: var(--caelestia-tile-radius) !important;
+  --toolbarbutton-border-radius: var(--caelestia-pill-radius) !important;
+  --button-border-radius: var(--caelestia-pill-radius) !important;
+  --panel-border-radius: var(--caelestia-menu-radius) !important;
+  --arrowpanel-menuitem-border-radius: var(--caelestia-menuitem-radius) !important;
+  --menuitem-border-radius: var(--caelestia-menuitem-radius) !important;
+  --urlbar-icon-border-radius: var(--md-shape-full) !important;
+  --urlbar-inner-border-radius: var(--md-shape-lg) !important;
+  --zen-webview-border-radius: var(--caelestia-content-radius) !important;
+}
+
+:root[caelestia-m3e][caelestia-shape="standard"] {
+  --caelestia-tab-radius-selected: var(--md-shape-sm) !important;
+  --caelestia-tab-radius-pressed: 4px !important;
+  --caelestia-tile-radius: var(--md-shape-md) !important;
+  --caelestia-tile-radius-selected: var(--md-shape-md) !important;
+  --caelestia-pill-radius: var(--md-shape-sm) !important;
+  --caelestia-button-radius: var(--md-shape-sm) !important;
+  --caelestia-button-radius-pressed: var(--md-shape-sm) !important;
+  --caelestia-segment-inner: 6px !important;
+  --caelestia-segment-outer: 8px !important;
+  --caelestia-menu-radius: var(--md-shape-md) !important;
+  --caelestia-menuitem-radius: var(--md-shape-sm) !important;
+  --caelestia-panel-radius: var(--md-shape-lg) !important;
+  --caelestia-content-radius: var(--md-shape-md) !important;
+}
+
+:root[caelestia-m3e][caelestia-density="compact"] {
+  --caelestia-menu-scale: 0.625 !important; /* 30 / 48 */
+  --caelestia-tab-height: 34px !important;
+  --caelestia-tile-height: 44px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[caelestia-m3e] {
+    --md-spring-fast-spatial: var(--md-easing-effects) !important;
+    --md-spring-default-spatial: var(--md-easing-effects) !important;
+    --md-dur-default: var(--md-dur-fast) !important;
+  }
+}

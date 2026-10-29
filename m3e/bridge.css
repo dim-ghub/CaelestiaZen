@@ -1,0 +1,132 @@
+/* Bridge: maps Caelestia's M3 color roles onto Zen's own variables.
+ * Active whenever a scheme is loaded, independent of the M3E UI toggle.
+ * Replaces the old templates/zen-browser.css. */
+
+:root[caelestia-theme-active="true"] {
+  --zen-primary-color: var(--md-sys-color-primary) !important;
+  --zen-colors-primary: var(--md-sys-color-primary) !important;
+  --zen-colors-primary-foreground: var(--md-sys-color-on-primary) !important;
+  --zen-colors-secondary: var(--md-sys-color-secondary) !important;
+  --zen-colors-tertiary: var(--md-sys-color-tertiary) !important;
+  --zen-colors-hover-bg: var(--md-sys-color-surface-container-high) !important;
+  --zen-colors-border: var(--md-sys-color-outline) !important;
+  --zen-colors-border-contrast: var(--md-sys-color-outline-variant) !important;
+  --zen-colors-input-bg: var(--md-sys-color-surface-container-high) !important;
+
+  --zen-branding-dark: var(--md-sys-color-surface) !important;
+  --zen-branding-paper: var(--md-sys-color-surface-container-high) !important;
+  --zen-branding-bg: var(--md-sys-color-surface) !important;
+  --zen-branding-bg-reverse: var(--md-sys-color-on-surface) !important;
+
+  --zen-themed-toolbar-bg: var(--md-sys-color-surface-container-high) !important;
+  --zen-dialog-background: var(--md-sys-color-surface-container) !important;
+  --zen-urlbar-background: var(--md-sys-color-surface-container-high) !important;
+  --zen-in-content-dialog-background: var(--md-sys-color-surface-container) !important;
+  --zen-sidebar-themed-icon-fill: var(--md-sys-color-primary) !important;
+
+  --toolbar-bgcolor: var(--md-sys-color-surface-container) !important;
+  --toolbar-color: var(--md-sys-color-on-surface) !important;
+  --toolbox-textcolor: var(--md-sys-color-on-surface) !important;
+  --toolbox-textcolor-inactive: var(--md-sys-color-on-surface-variant) !important;
+  --toolbar-field-color: var(--md-sys-color-on-surface) !important;
+  --toolbar-field-background-color: var(--md-sys-color-surface-container-high) !important;
+  --toolbar-field-focus-background-color: var(--md-sys-color-surface-container-highest) !important;
+  --input-bgcolor: var(--md-sys-color-surface-container-high) !important;
+  --input-border-color: var(--md-sys-color-outline-variant) !important;
+  --zen-input-border-color: var(--md-sys-color-outline-variant) !important;
+
+  --urlbar-box-bgcolor: var(--md-sys-color-surface-container-high) !important;
+  --urlbar-box-hover-bgcolor: var(--md-sys-color-surface-container-highest) !important;
+  --urlbar-box-active-bgcolor: var(--md-sys-color-surface-container-highest) !important;
+
+  --tab-background-color: var(--md-sys-color-surface-container) !important;
+  --tab-hover-background-color: var(--md-sys-color-surface-container-high) !important;
+  --toolbarbutton-hover-background: var(--md-sys-color-surface-container-high) !important;
+  --toolbarbutton-active-background: var(--md-sys-color-surface-container-highest) !important;
+  --toolbarbutton-background-color-hover: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent) !important;
+  --toolbarbutton-background-color-active: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent) !important;
+  --toolbarbutton-icon-fill: var(--md-sys-color-on-surface) !important;
+  --toolbarbutton-icon-fill-attention: var(--md-sys-color-primary) !important;
+  --zen-toolbar-element-bg: var(--md-sys-color-surface-container-high) !important;
+  --zen-toolbar-element-bg-hover: var(--md-sys-color-surface-container-highest) !important;
+
+  --arrowpanel-background: var(--md-sys-color-surface-container) !important;
+  --arrowpanel-color: var(--md-sys-color-on-surface) !important;
+  --arrowpanel-border-color: transparent !important;
+  --panel-separator-color: var(--md-sys-color-outline-variant) !important;
+
+  --in-content-primary-button-background: var(--md-sys-color-primary) !important;
+  --in-content-primary-button-background-hover: color-mix(in srgb, var(--md-sys-color-on-primary) 8%, var(--md-sys-color-primary)) !important;
+  --in-content-primary-button-background-active: color-mix(in srgb, var(--md-sys-color-on-primary) 12%, var(--md-sys-color-primary)) !important;
+  --in-content-primary-button-text-color: var(--md-sys-color-on-primary) !important;
+  --in-content-button-background: var(--md-sys-color-secondary-container) !important;
+  --in-content-button-text-color: var(--md-sys-color-on-secondary-container) !important;
+  --in-content-accent-color: var(--md-sys-color-primary) !important;
+  --in-content-page-background: var(--md-sys-color-surface) !important;
+  --focus-outline-color: var(--md-sys-color-primary) !important;
+  --link-color: var(--md-sys-color-primary) !important;
+
+  --zen-appcontent-border: 1px solid var(--md-sys-color-surface-container) !important;
+}
+
+/* Solid background: Caelestia's surface container behind everything.
+ * Zen's gradient generator writes these inline; a user !important rule wins over inline. */
+:root[caelestia-theme-active="true"][caelestia-background="solid"] {
+  --zen-main-browser-background: var(--md-sys-color-surface-container) !important;
+  --zen-main-browser-background-old: var(--md-sys-color-surface-container) !important;
+  --zen-main-browser-background-toolbar: var(--md-sys-color-surface-container) !important;
+  --zen-main-browser-background-toolbar-old: var(--md-sys-color-surface-container) !important;
+  --zen-themed-toolbar-bg-transparent: var(--md-sys-color-surface-container) !important;
+  background-color: var(--md-sys-color-surface-container) !important;
+
+  & :is(#zen-browser-background, .zen-browser-generic-background, #browser, #tabbrowser-tabpanels) {
+    --zen-main-browser-background: var(--md-sys-color-surface-container) !important;
+    --zen-main-browser-background-old: var(--md-sys-color-surface-container) !important;
+  }
+
+  & :is(#zen-browser-background, #browser, #tabbrowser-tabpanels) {
+    background-color: var(--md-sys-color-surface-container) !important;
+  }
+
+  & :is(#TabsToolbar, #navigator-toolbox) {
+    background: var(--md-sys-color-surface-container) !important;
+  }
+
+  /* New-tab / loading background, instead of transparent */
+  & .browserStack browser {
+    background-color: var(--md-sys-color-surface) !important;
+  }
+
+  & .browserContainer {
+    border-color: var(--md-sys-color-surface-container) !important;
+    outline-color: var(--md-sys-color-surface-container) !important;
+  }
+}
+
+:root[caelestia-theme-active="true"] {
+  & #sidebar-box {
+    --sidebar-background-color: var(--md-sys-color-surface-dim) !important;
+    --sidebar-text-color: var(--md-sys-color-on-surface) !important;
+    --lwt-sidebar-background-color: var(--md-sys-color-surface-dim) !important;
+    --lwt-sidebar-text-color: var(--md-sys-color-on-surface) !important;
+  }
+
+  & #urlbar {
+    --toolbar-color: var(--md-sys-color-on-surface) !important;
+    --toolbar-field-color: var(--md-sys-color-on-surface-variant) !important;
+  }
+
+  & #urlbar-background,
+  & #urlbar .urlbar-background {
+    background-color: var(--md-sys-color-surface-container-high) !important;
+  }
+
+  & .toolbarbutton-icon {
+    fill: var(--md-sys-color-on-surface) !important;
+  }
+
+  & ::selection {
+    background: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-on-primary) !important;
+  }
+}

@@ -1,0 +1,90 @@
+/* ::part() rules.
+ *
+ * Firefox ignores ::part() in user-origin stylesheets, which is how Sine loads
+ * chrome.css, so theme-sync.uc.js loads this file as an author sheet instead.
+ * Keep every ::part() rule here. */
+
+/* Segmented popups: transparent content, a shadow that follows each group */
+:root[caelestia-m3e] :is(menupopup[caelestia-segmented], #appMenu-popup, #zen-unified-site-data-panel)::part(content) {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35)) drop-shadow(0 3px 8px rgba(0, 0, 0, 0.2)) !important;
+}
+
+:root[caelestia-m3e] dialog::part(dialog-button) {
+  border-radius: var(--caelestia-pill-radius) !important;
+}
+
+/* Open: like KiiteShell's popup menu, the popup is revealed by a clip that
+ * springs open from the point it was opened from (the right-click position,
+ * or where the pointer pressed its button), so the content doesn't scale —
+ * the window grows around it. Rows drop in separately (menus.css).
+ * theme-sync.uc.js sets --caelestia-ox/--caelestia-oy (that point, in % of
+ * the popup) and [caelestia-opening] on popupshowing, clearing it on
+ * popuphidden so this replays on every open. From the keyboard it opens
+ * from the top-left. Spring: ω = 20 rad/s, ζ = 0.72 (KiiteShell). */
+:root[caelestia-m3e] :is(menupopup:not(#zenCreateNewPopup), panel[type="arrow"])[caelestia-opening]:not([caelestia-closing])::part(content) {
+  animation: caelestia-popup-reveal 500ms var(--caelestia-spring-popup) backwards,
+    caelestia-fade-in 120ms var(--md-easing-effects) both !important;
+}
+
+/* Waiting to be mapped: collapsed to a dot at the origin, so the reveal can
+ * start from there once the popup is actually on screen. */
+:root[caelestia-m3e] :is(menupopup:not(#zenCreateNewPopup), panel[type="arrow"])[caelestia-pending]::part(content) {
+  clip-path: inset(var(--caelestia-oy, 0%) calc(100% - var(--caelestia-ox, 0%)) calc(100% - var(--caelestia-oy, 0%)) var(--caelestia-ox, 0%) round var(--caelestia-group-outer, 16px)) !important;
+}
+
+/* Close: folds up toward where it opened (to 85% width) and fades. */
+:root[caelestia-m3e] menupopup[caelestia-closing]::part(content) {
+  animation: caelestia-popup-fold 160ms cubic-bezier(0.33, 1, 0.68, 1) forwards !important;
+}
+
+:root[caelestia-m3e] {
+  --caelestia-spring-popup: linear(0, 0.066 4%, 0.215 8%, 0.393 12%, 0.566 16%, 0.715 20%, 0.833 24%, 0.92 28%, 0.978 32%, 1.013 36%, 1.032 40%, 1.038 44%, 1.037 48%, 1.032 52%, 1.026 56%, 1.019 60%, 1.013 64%, 1.008 68%, 1.004 72%, 1.001 76%, 1 80%, 1);
+}
+
+@keyframes caelestia-popup-reveal {
+  from {
+    clip-path: inset(var(--caelestia-oy, 0%) calc(100% - var(--caelestia-ox, 0%)) calc(100% - var(--caelestia-oy, 0%)) var(--caelestia-ox, 0%) round var(--caelestia-group-outer, 16px));
+  }
+  to {
+    /* past the edges so the groups' drop shadows aren't cut */
+    clip-path: inset(-24px round var(--caelestia-group-outer, 16px));
+  }
+}
+
+@keyframes caelestia-popup-fold {
+  from {
+    clip-path: inset(-24px round var(--caelestia-group-outer, 16px));
+    opacity: 1;
+  }
+  to {
+    clip-path: inset(var(--caelestia-oy, 0%) 15% calc(100% - var(--caelestia-oy, 0%)) 0 round var(--caelestia-group-outer, 16px));
+    opacity: 0;
+  }
+}
+
+:root[caelestia-m3e] #zenCreateNewPopup::part(content) {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  overflow: visible !important;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15)) !important;
+}
+
+
+@keyframes caelestia-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[caelestia-m3e] :is(menupopup, panel)[caelestia-opening]::part(content) {
+    animation: caelestia-fade-in 200ms linear both !important;
+  }
+}

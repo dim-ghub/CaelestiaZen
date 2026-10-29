@@ -1,20 +1,25 @@
 {
   "id": "caelestia-zen",
   "name": "CaelestiaZen",
-  "description": "Syncs Caelestia's surface color to Zen Browser boosts.",
+  "description": "Live Caelestia theming for Zen Browser with an M3 Expressive interface and website tinting.",
   "homepage": "https://github.com/dim-ghub/CaelestiaZen",
   "author": "DiM",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "tags": [
     "Theme",
     "Boost",
     "Sync",
-    "Caelestia"
+    "Caelestia",
+    "Material"
   ],
+  "style": {
+    "chrome": "chrome.css",
+    "content": ""
+  },
   "scripts": {
     "theme-sync.uc.js": {
       "name": "CaelestiaZen",
-      "description": "Syncs surface color to Zen Boosts.",
+      "description": "Syncs Caelestia's scheme to the browser and website boosts.",
       "include": [
         "chrome://browser/content/browser.xhtml"
       ]

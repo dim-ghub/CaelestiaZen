@@ -1,0 +1,193 @@
+/* M3E sidebar: tabs, Essentials, space header, spaces switcher, sidebar buttons.
+ *
+ * Pill radii are computed from each element's own height (never 9999px), so
+ * pill → rounded-rect morphs animate instead of snapping at the end. */
+
+:root[caelestia-m3e] {
+
+  /* ---------- Tabs (incl. pinned / folder children) ---------- */
+
+  &[zen-sidebar-expanded="true"] #tabbrowser-tabs {
+    --tab-min-height: var(--caelestia-tab-height) !important;
+  }
+
+  & .tabbrowser-tab:not([zen-essential]) {
+    & > .tab-stack > .tab-background {
+      /* half the painted height: tab height minus the block margins */
+      --caelestia-tab-pill: calc((var(--tab-min-height) - 2 * var(--tab-block-margin, 4px)) / 2);
+      border-radius: var(--caelestia-tab-pill) !important;
+      transition: var(--caelestia-shape-transition) !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+
+    &:not([visuallyselected], [multiselected]):hover > .tab-stack > .tab-background {
+      background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent) !important;
+    }
+
+    &[visuallyselected] {
+      & > .tab-stack > .tab-background {
+        background-color: var(--md-sys-color-secondary-container) !important;
+        border-radius: var(--caelestia-tab-radius-selected) !important;
+      }
+
+      & .tab-label,
+      & .tab-close-button,
+      & .zen-tab-sublabel {
+        color: var(--md-sys-color-on-secondary-container) !important;
+        fill: var(--md-sys-color-on-secondary-container) !important;
+      }
+
+      & .tab-label {
+        font-weight: 600 !important;
+      }
+    }
+
+    /* Press morph: corners tighten while held, spring back on release */
+    &:active > .tab-stack > .tab-background {
+      border-radius: var(--caelestia-tab-radius-pressed) !important;
+    }
+
+    &[multiselected]:not([visuallyselected]) > .tab-stack > .tab-background {
+      background-color: color-mix(in srgb, var(--md-sys-color-secondary-container) 60%, transparent) !important;
+      border-radius: var(--caelestia-tab-radius-selected) !important;
+    }
+
+    & .tab-close-button {
+      border-radius: 50% !important;
+
+      &:hover {
+        background-color: color-mix(in srgb, currentColor 12%, transparent) !important;
+      }
+    }
+  }
+
+  &[caelestia-shape="standard"] .tabbrowser-tab:not([zen-essential]) > .tab-stack > .tab-background {
+    --caelestia-tab-pill: var(--md-shape-sm);
+  }
+
+  /* No press bounce anywhere in the sidebar: the ripple is the feedback. */
+  & :is(.tabbrowser-tab, #vertical-tabs-newtab-button, #tabs-newtab-button, #zen-workspaces-button toolbarbutton, .zen-library-tab):active {
+    scale: 1 !important;
+  }
+
+  /* ---------- Essentials: tonal tiles ---------- */
+
+  & .tabbrowser-tab[zen-essential] {
+    --tab-min-height: var(--caelestia-tile-height) !important;
+
+    & > .tab-stack > .tab-background {
+      border-radius: var(--caelestia-tile-radius) !important;
+      background-color: var(--md-sys-color-surface-container-high) !important;
+      transition: var(--caelestia-shape-transition) !important;
+
+      &::before {
+        background: transparent !important;
+      }
+    }
+
+    &:not([visuallyselected]):hover > .tab-stack > .tab-background {
+      background-color: var(--md-sys-color-surface-container-highest) !important;
+    }
+
+    &[visuallyselected] > .tab-stack > .tab-background {
+      background-color: var(--md-sys-color-primary-container) !important;
+      border-radius: var(--caelestia-tile-radius-selected) !important;
+    }
+
+    &:active > .tab-stack > .tab-background {
+      border-radius: var(--md-shape-sm) !important;
+    }
+  }
+
+  /* ---------- New tab / space header ---------- */
+
+  & :is(#vertical-tabs-newtab-button, #tabs-newtab-button, .zen-current-workspace-indicator) {
+    border-radius: calc(var(--tab-min-height, 36px) / 2) !important;
+    transition: var(--caelestia-shape-transition) !important;
+
+    &:active {
+      border-radius: var(--caelestia-tab-radius-pressed) !important;
+    }
+  }
+
+  &[caelestia-shape="standard"] :is(#vertical-tabs-newtab-button, #tabs-newtab-button, .zen-current-workspace-indicator) {
+    border-radius: var(--md-shape-sm) !important;
+  }
+
+  & .zen-current-workspace-indicator-name {
+    font-weight: 650 !important;
+    letter-spacing: 0.1px;
+  }
+
+  /* ---------- Spaces switcher: connected button group ---------- */
+
+  & #zen-workspaces-button:not([icons-overflow]) {
+    gap: 2px !important;
+
+    & toolbarbutton {
+      min-width: 36px !important;
+      max-width: none !important;
+      height: 36px !important;
+      background-color: var(--md-sys-color-surface-container-high) !important;
+      border-radius: var(--caelestia-segment-inner) !important;
+      filter: none !important;
+      opacity: 1 !important;
+      transition: var(--caelestia-shape-transition),
+        min-width var(--md-dur-default) var(--md-spring-default-spatial) !important;
+
+      &:first-of-type {
+        border-start-start-radius: var(--caelestia-segment-outer) !important;
+        border-end-start-radius: var(--caelestia-segment-outer) !important;
+      }
+
+      &:last-of-type {
+        border-start-end-radius: var(--caelestia-segment-outer) !important;
+        border-end-end-radius: var(--caelestia-segment-outer) !important;
+      }
+
+      &:not([active="true"]) .zen-workspace-icon {
+        fill: var(--md-sys-color-on-surface-variant) !important;
+        color: var(--md-sys-color-on-surface-variant) !important;
+      }
+
+      &:not([active="true"]):hover {
+        background-color: var(--md-sys-color-surface-container-highest) !important;
+      }
+
+      &[active="true"] {
+        min-width: 56px !important;
+        border-radius: var(--caelestia-segment-outer) !important;
+        background-color: var(--md-sys-color-primary) !important;
+
+        & .zen-workspace-icon {
+          fill: var(--md-sys-color-on-primary) !important;
+          color: var(--md-sys-color-on-primary) !important;
+          fill-opacity: 1 !important;
+
+          &[no-icon="true"] {
+            background: var(--md-sys-color-on-primary) !important;
+          }
+        }
+      }
+    }
+  }
+
+  /* ---------- Sidebar / toolbar icon buttons ---------- */
+
+  & :is(#zen-sidebar-top-buttons, #zen-sidebar-foot-buttons, #nav-bar, #TabsToolbar, #zen-library-footer) .toolbarbutton-1:not(#zen-workspaces-button, #zen-create-new-button) {
+    & > :is(.toolbarbutton-icon, .toolbarbutton-badge-stack) {
+      border-radius: var(--caelestia-button-radius) !important;
+      transition: var(--caelestia-shape-transition) !important;
+    }
+
+    &:not([disabled]):active > :is(.toolbarbutton-icon, .toolbarbutton-badge-stack) {
+      border-radius: var(--caelestia-button-radius-pressed) !important;
+    }
+
+    &:is([open], [checked]) > :is(.toolbarbutton-icon, .toolbarbutton-badge-stack) {
+      background-color: var(--md-sys-color-primary-container) !important;
+      fill: var(--md-sys-color-on-primary-container) !important;
+    }
+  }
+}

@@ -1,83 +1,138 @@
 [
   {
     "type": "separator",
-    "label": "CaelestiaZen Settings"
-  },
-  {
-    "type": "string",
-    "property": "caelestia.zen-sync.chrome-path",
-    "defaultValue": "~/.local/state/caelestia/theme/zen-browser.css",
-    "label": "Theme File Path",
-    "description": "Path to the zen-browser.css theme file"
-  },
-  {
-    "type": "separator",
-    "label": "Transparent Zen Mod"
-  },
-  {
-    "type": "checkbox",
-    "property": "caelestia.zen-sync.transparent-zen",
-    "defaultValue": false,
-    "label": "Enable Transparent Zen",
-    "description": "Uses surface color with transparency for background, disables website theming."
-  },
-  {
-    "type": "string",
-    "value": "num",
-    "property": "caelestia.zen-sync.transparency-level",
-    "defaultValue": "80",
-    "label": "Transparency Level",
-    "description": "Opacity level for background (0-100)"
-  },
-  {
-    "type": "separator",
-    "label": "Website Boost"
-  },
-  {
-    "type": "checkbox",
-    "property": "caelestia.zen-sync.boost-enabled",
-    "defaultValue": true,
-    "label": "Enable Website Boost",
-    "description": "Applies the selected color boost to every website. Disable to leave websites untouched."
+    "label": "Interface"
   },
   {
     "type": "dropdown",
     "value": "string",
-    "property": "caelestia.zen-sync.boost-color",
+    "property": "caelestia.zen.ui-style",
+    "defaultValue": "m3e",
+    "label": "Interface style",
+    "description": "Restyle Zen's sidebar, URL bar and menus",
+    "options": [
+      { "label": "M3 Expressive", "value": "m3e" },
+      { "label": "Zen default", "value": "zen" }
+    ]
+  },
+  {
+    "type": "dropdown",
+    "value": "string",
+    "property": "caelestia.zen.ui-shape",
+    "defaultValue": "expressive",
+    "label": "Shape",
+    "options": [
+      { "label": "Expressive (round, large)", "value": "expressive" },
+      { "label": "Standard", "value": "standard" }
+    ],
+    "conditions": [{ "if": { "property": "caelestia.zen.ui-style", "value": "m3e" } }]
+  },
+  {
+    "type": "dropdown",
+    "value": "string",
+    "property": "caelestia.zen.ui-density",
+    "defaultValue": "comfortable",
+    "label": "Density",
+    "options": [
+      { "label": "Comfortable", "value": "comfortable" },
+      { "label": "Compact", "value": "compact" }
+    ],
+    "conditions": [{ "if": { "property": "caelestia.zen.ui-style", "value": "m3e" } }]
+  },
+  {
+    "type": "checkbox",
+    "property": "caelestia.zen.follow-mode",
+    "defaultValue": true,
+    "label": "Follow Caelestia light/dark",
+    "description": "Switch Zen and websites between light and dark with your shell's scheme"
+  },
+  {
+    "type": "separator",
+    "label": "Websites"
+  },
+  {
+    "type": "dropdown",
+    "value": "string",
+    "property": "caelestia.zen.tint",
+    "defaultValue": "balanced",
+    "label": "Website tint",
+    "description": "How strongly every website is recolored to match your scheme",
+    "options": [
+      { "label": "Off", "value": "off" },
+      { "label": "Subtle", "value": "subtle" },
+      { "label": "Balanced", "value": "balanced" },
+      { "label": "Vivid", "value": "vivid" },
+      { "label": "Accent", "value": "accent" },
+      { "label": "Custom", "value": "custom" }
+    ]
+  },
+  {
+    "type": "dropdown",
+    "value": "string",
+    "property": "caelestia.zen.tint-color",
     "defaultValue": "surface",
-    "label": "Boost Color",
-    "description": "Which scheme variable is used for the website boost",
+    "label": "Tint color",
     "options": [
       { "label": "Surface", "value": "surface" },
       { "label": "Surface Container", "value": "surfaceContainer" },
       { "label": "Surface Container High", "value": "surfaceContainerHigh" },
       { "label": "Surface Dim", "value": "surfaceDim" },
       { "label": "On Surface", "value": "onSurface" },
-      { "label": "Primary", "value": "primary" }
+      { "label": "Primary", "value": "primary" },
+      { "label": "Secondary", "value": "secondary" },
+      { "label": "Tertiary", "value": "tertiary" }
+    ],
+    "conditions": [{ "if": { "property": "caelestia.zen.tint", "value": "custom" } }]
+  },
+  {
+    "type": "string",
+    "value": "num",
+    "property": "caelestia.zen.tint-intensity",
+    "defaultValue": "150",
+    "label": "Intensity (0-200)",
+    "description": "Higher = more vivid",
+    "conditions": [{ "if": { "property": "caelestia.zen.tint", "value": "custom" } }]
+  },
+  {
+    "type": "string",
+    "value": "num",
+    "property": "caelestia.zen.tint-brightness",
+    "defaultValue": "15",
+    "label": "Brightness (0-100)",
+    "description": "Higher = brighter",
+    "conditions": [{ "if": { "property": "caelestia.zen.tint", "value": "custom" } }]
+  },
+  {
+    "type": "string",
+    "value": "num",
+    "property": "caelestia.zen.tint-strength",
+    "defaultValue": "70",
+    "label": "Strength (0-100)",
+    "description": "Higher = stronger tint",
+    "conditions": [{ "if": { "property": "caelestia.zen.tint", "value": "custom" } }]
+  },
+  {
+    "type": "separator",
+    "label": "Background"
+  },
+  {
+    "type": "dropdown",
+    "value": "string",
+    "property": "caelestia.zen.background",
+    "defaultValue": "solid",
+    "label": "Background",
+    "options": [
+      { "label": "Caelestia surface", "value": "solid" },
+      { "label": "Transparent (needs Transparent Zen mod)", "value": "transparent" }
     ]
   },
   {
     "type": "string",
     "value": "num",
-    "property": "caelestia.zen-sync.saturation",
-    "defaultValue": "150",
-    "label": "Color Intensity (0-200, higher = more vivid)",
-    "description": "Saturation multiplier. Range 0-200, default 150. Lower = more muted, higher = more vivid."
-  },
-  {
-    "type": "string",
-    "value": "num",
-    "property": "caelestia.zen-sync.brightness",
-    "defaultValue": "15",
-    "label": "Color Brightness (0-100, higher = brighter)",
-    "description": "Brightness. Range 0-100, default 15. Lower = darker, higher = brighter."
-  },
-  {
-    "type": "string",
-    "value": "num",
-    "property": "caelestia.zen-sync.contrast",
-    "defaultValue": "30",
-    "label": "Color Strength (0-100, lower = stronger)",
-    "description": "Tint opacity. Range 0-100, default 30. Lower = stronger tint, higher = more subtle."
+    "property": "caelestia.zen.background-opacity",
+    "defaultValue": "80",
+    "label": "Opacity (0-100)",
+    "description": "Website tint keeps working while Transparent is active",
+    "conditions": [{ "if": { "property": "caelestia.zen.background", "value": "transparent" } }]
   }
 ]
