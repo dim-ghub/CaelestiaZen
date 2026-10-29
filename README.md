@@ -13,55 +13,80 @@ A Sine mod for Zen Browser that live-themes the browser from your [Caelestia](ht
 
 ## Installation
 
-Use [pkgit](https://git.symlinx.net/pkgit/) to install CaelestiaZen:
+You need Zen Browser, [Caelestia](https://github.com/caelestia-dots), and `git`, `curl`, `unzip` and `python3`. There are three ways to install.
+
+### 1. Install script (recommended)
+
 ```bash
-pkgit -i https://github.com/dim-ghub/CaelestiaZen
+git clone https://github.com/dim-ghub/CaelestiaZen
+cd CaelestiaZen
+bash install.sh
 ```
 
-For development, clone the repository and run the install script with the `--dev` flag to use symlinks:
+The script asks two things:
+
+- **Which browser:** it detects Zen (including the Flatpak) and preselects it. Pick `0` to type an install and profile directory yourself.
+- **Which profile:** your default profile is listed first.
+
+Then it:
+
+- **Installs Sine** (the mod loader) if it isn't already there. Its bootloader goes into the browser's install directory, which usually needs `sudo`; you'll be asked for your password if so. If Sine is already installed, it asks whether to reinstall it.
+- **Copies the mod** into `<profile>/chrome/sine-mods/caelestia-zen` and enables it in `mods.json`.
+- **Removes the Caelestia template** left behind by CaelestiaZen 1.x, if there is one. Colors now come straight from `scheme.json`.
+
+Restart Zen Browser. If the new look doesn't appear, open `about:support`, click **Clear Startup Cache**, and restart again.
+
+### 2. Development install
+
 ```bash
 git clone https://github.com/dim-ghub/CaelestiaZen
 cd CaelestiaZen
 bash install.sh --dev
 ```
 
-This will automatically:
-- Install Sine
-- Copy or symlink the mod files
-- Update `mods.json`
-- Remove the template used by CaelestiaZen 1.x, if present
+Same as above, but the mod files are **symlinked** to your clone instead of copied, so edits take effect on the next Zen restart without reinstalling.
 
-Then restart Zen Browser. If styles don't appear, open `about:support`, click **Clear Startup Cache**, and restart again.
+### 3. Manual install
 
-## Manual Installation
+Use this if Sine is already set up and you'd rather not run the script. Replace `<profile>` with your profile folder (listed in `~/.config/zen/profiles.ini`).
 
-1. Create the mod directory:
+1. Copy the mod into Sine's mod folder:
 ```bash
 mkdir -p ~/.config/zen/<profile>/chrome/sine-mods/caelestia-zen
-```
-
-2. Copy the mod files:
-```bash
-cp *.json *.uc.js chrome.css ~/.config/zen/<profile>/chrome/sine-mods/caelestia-zen/
+cp theme.json preferences.json theme-sync.uc.js chrome.css ~/.config/zen/<profile>/chrome/sine-mods/caelestia-zen/
 cp -r m3e ~/.config/zen/<profile>/chrome/sine-mods/caelestia-zen/
 ```
 
-3. Add to `mods.json` in `~/.config/zen/<profile>/chrome/sine-mods/`:
+2. Register it in `mods.json`:
 ```bash
 cd ~/.config/zen/<profile>/chrome/sine-mods
 python3 -c "
-import json
-with open('mods.json', 'r') as f:
-    mods = json.load(f)
-with open('caelestia-zen/theme.json', 'r') as f:
-    new_mod = json.load(f)
-mods['caelestia-zen'] = new_mod
-mods['caelestia-zen']['origin'] = 'store'
-mods['caelestia-zen']['enabled'] = True
-with open('mods.json', 'w') as f:
-    json.dump(mods, f, indent=2)
+import json, os
+mods = json.load(open('mods.json')) if os.path.exists('mods.json') else {}
+mod = json.load(open('caelestia-zen/theme.json'))
+mod['origin'] = 'store'
+mod['enabled'] = True
+mods['caelestia-zen'] = mod
+json.dump(mods, open('mods.json', 'w'), indent=2)
 "
 ```
+
+3. Restart Zen Browser.
+
+### Updating
+
+```bash
+cd CaelestiaZen
+git pull
+bash install.sh
+```
+
+With a development install, `git pull` and a restart are enough.
+
+### Uninstalling
+
+1. Remove `~/.config/zen/<profile>/chrome/sine-mods/caelestia-zen` and its `caelestia-zen` entry in `mods.json` (or disable it in Sine's settings).
+2. In `about:config`, reset the `caelestia.zen.*` prefs, and the `ui.highlight`, `ui.highlighttext`, `ui.textSelectDisabledBackground`, `ui.accentcolor` and `ui.accentcolortext` prefs CaelestiaZen set, to get your system selection colors back.
 
 ## Configuration
 
@@ -79,7 +104,7 @@ Everything is in the mod's Sine settings and applies live:
 
 Settings from CaelestiaZen 1.x (`caelestia.zen-sync.*`) are migrated automatically the first time 2.0 runs.
 
-To match text selection and form-control accents to your scheme, CaelestiaZen sets Firefox's `ui.highlight`, `ui.highlighttext`, `ui.textSelectDisabledBackground`, `ui.accentcolor` and `ui.accentcolortext` prefs. If you remove the mod, reset them in `about:config` to get your system colors back.
+To match text selection and form-control accents to your scheme, CaelestiaZen sets Firefox's `ui.highlight`, `ui.highlighttext`, `ui.textSelectDisabledBackground`, `ui.accentcolor` and `ui.accentcolortext` prefs (see [Uninstalling](#uninstalling)).
 
 ### Advanced
 
@@ -98,5 +123,5 @@ The website tint shifts the overall color scheme of every website, which can aff
 ## Requirements
 
 - [Caelestia](https://github.com/caelestia-dots)
-- Zen Browser with the Sine mod system installed
+- Zen Browser with the [Sine](https://github.com/CosmoCreeper/Sine) mod loader (`install.sh` installs it for you)
 - Optional: [Google Sans Flex](https://fonts.google.com/specimen/Google+Sans+Flex) or Roboto Flex for the M3 Expressive typography (falls back to your system font)
